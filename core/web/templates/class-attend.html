@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="rtl">
 <head>
-	<title>Login V6</title>
+	<title>ثبت نام حضوری</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -32,33 +32,44 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-15 p-b-20">
-				<form class="login100-form validate-form">
-					<span class="login100-form-title p-b-70">
-						CS50xIran
+				<form class="login100-form validate-form" method="post"> {% csrf_token %}
+					<span class="login100-form-title">
+						<img src="/static/welcome_page/images/footer-logo.png" alt="">
 					</span>
-					<span class="login100-form-avatar">
-						<img src="/static/welcome_page/images/avatar-01.jpg" alt="AVATAR">
-					</span>
-<!-- 
-					<div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter username">
-						<input class="input100" type="text" name="username">
-						<span class="focus-input100" data-placeholder="Username"></span>
+					<h3>فرم ثبت نام حضوری</h3>
+					{% if message %}
+						<h3 style="color: red; margin-top: 5px;">{{ message }}</h3>
+					{% endif %}
+					{% if qrcode %}
+						<button class="login100-form-btn">
+							<a href="{{ qrcode }}" download>دانلود بلیط</a>
+						</button>
+					{% endif %}
+
+					<div class="wrap-input100 validate-input m-t-15 m-b-35" data-validate = "Enter username">
+						<input class="input100" type="text" name="name">
+						<span class="focus-input100" data-placeholder="نام و نام خانوادگی"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-35" data-validate="Enter password">
+						<input class="input100" type="text" name="ticket">
+						<span class="focus-input100" data-placeholder="کد بلیط"></span>
+					</div>
+
+					
+					<div class="wrap-input100 validate-input m-b-35" data-validate = "Enter username">
+						<input class="input100" type="email" name="email">
+						<span class="focus-input100" data-placeholder="ایمیل"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-50" data-validate="Enter password">
-						<input class="input100" type="password" name="pass">
-						<span class="focus-input100" data-placeholder="Password"></span>
-					</div> -->
-
-					<div class="container-login100-form-btn m-t-85 m-b-35">
-						<button class="login100-form-btn">
-							<a href="/test">فرم ثبت نام حضوری هفته سه</a>
-						</button>
+						<input class="input100" type="tel" name="phone">
+						<span class="focus-input100" data-placeholder="شماره تلفن"></span>
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
-							<a href="/test">فرم انتقادات و پیشنهادات</a>
+						<button class="login100-form-btn" type="submit">
+							<a href="class-attend">ثبت اطلاعات</a>
 						</button>
 					</div>
 				</form>
