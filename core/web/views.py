@@ -9,3 +9,6 @@ def indexView(request):
 
 class WelcomePage(TemplateView):
     template_name = 'welcome.html'
+
+class FeedBackPage(TemplateView):
+    template_name = 'feed_back.html'
