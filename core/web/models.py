@@ -59,6 +59,9 @@ class ClassCancel(models.Model):
 
 class ClassInfo(models.Model):
     counter = models.PositiveIntegerField()
+    
+    def __str__(self) -> str:
+        return 'counter'
 
 class NoSupport(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
