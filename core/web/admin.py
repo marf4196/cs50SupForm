@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Messages
+from .models import Messages, PersonRegister
 
 # Register your models here.
 
@@ -9,3 +9,10 @@ class MessagesAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_time'
     ordering = ['-created_time']
 admin.site.register(Messages, MessagesAdmin)
+
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ['name', 'lName', 'email', 'phone', 'ticket','qr_code', 'created_time', 'updated_time']
+    search_fields = ['email', 'phone']
+    date_hierarchy = 'created_time'
+    ordering = ['-created_time']
+admin.site.register(PersonRegister, PersonAdmin)
