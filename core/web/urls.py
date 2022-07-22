@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path
-from .views import indexView
+from web.views import WelcomePage
 
 app_name = 'web'
 
 urlpatterns = [
-    path('', indexView, name='index'),
+    path('', WelcomePage.as_view(), name='welcome'),
 ]
