@@ -6,12 +6,12 @@ from django.db.models import Q
 from web.models import User
 # Create your views here.
 class test_template(TemplateView):
-    template_name = 'class-cancel.html'
+    template_name = 'download-page.html'
 
 class WelcomePage(TemplateView):
     template_name = 'welcome.html'
 
-class ClassAttend(View):
+class ClassAttendView(View):
     def get(self, request, *args, **kwrags):
         return render(request, 'class-attend.html')
     def post(self, request, *args, **kwrags):
@@ -47,36 +47,44 @@ class ClassAttend(View):
                 context['message'] = 'شما ثبت نام کرده بودید :)'
                 return render(request, 'class-attend.html', context)
 
-class ClassCancel(View):
+class ClassCancelView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'class-cancel.html')
 
     def post(self, request, *args, **kwargs):
         pass        
 
-class FindTicket(View):
+class FindTicketView(View):
     def get(self, request, *args, **kwargs):
         form = TicketForm
         context = {'form': form}
         return render(request, 'find-ticket.html', context)
 
     def post(self, request, *args, **kwargs):
-        ticket = request.POST['ticket']
-        qs = ClassAttend.objects.filter(ticket=ticket)
-        if qs.exists():
-            qs = ClassAttend.objects.get(ticket=ticket)
-            if qs.canceled:
-                context = {'detail': 'ثبت نام حضوری شما با موفقیت لغو شد'} 
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            ticket = form.cleaned_data.get('ticket')
+            qs = ClassAttend.objects.filter(ticket=ticket)
+            if qs.exists():
+                qs = ClassAttend.objects.get(ticket=ticket)
+                if qs.canceled:
+                    context = {'detail': 'ثبت نام حضوری شما لغو شده و امکان دریافت بلیط را ندارید'} 
+                    return render(request, 'result.html', context)
+                else:
+                    context = {
+                        'detail': 'در صورتی که فایل بلیط شما دانلود نشده است بر روی دکمه زیر کلیک کنید',
+                        'link': f"/{qs.qr_code}"
+                        }
+                    print(f"/127.0.0.1:8000/{qs.qr_code}")
+                    return render(request, 'download-ticket.html', context)
+            else: # qs doesn't exist
+                context = {'detail': 'شما برای جلسه حضوری ثبت نام نکرده بوده اید'} 
                 return render(request, 'result.html', context)
-            else:
-                context = {'detail': 'متاسفانه لغو ثبت نام شما موفقیت آمیز نبود'} 
-                return render(request, 'result.html', context)
-
-        else:
-            context = {'detail': 'شما برای جلسه حضوری ثبت نام نکرده بوده اید'} 
+        else: # form is not valid
+            context = {'detail': 'ورودی ارسالی قابل قبول نمی باشد'} 
             return render(request, 'result.html', context)
 
-class Feedback(View):
+class FeedbackView(View):
     def get(self, request, *args, **kwargs):
         form = FeedbackForm
         context = {'form': form}
@@ -106,7 +114,7 @@ class Feedback(View):
             context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
             return render(request, 'result.html', context)
         
-class NoSupport(View):
+class NoSupportView(View):
     def get(self, request, *args, **kwargs):
         form = NoSupportForm
         context = {'form': form}
