@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
-from web.forms import FeedbackForm
+from web.forms import FeedbackForm, NoSupportForm
 from .models import ClassAttend, Feedback, NoSupport, ClassCancel, ClassInfo
 from django.db.models import Q
 from web.models import User
 # Create your views here.
 class test_template(TemplateView):
-    template_name = 'feedback_result.html'
+    template_name = 'result.html'
 
 class WelcomePage(TemplateView):
     template_name = 'welcome.html'
@@ -85,38 +85,45 @@ class Feedback(View):
             if user is not None:    
                 form.save()    
                 context = {'detail': 'نظر شما با موفقیت ثبت شد'}        
-                return render(request, 'feedback_result.html', context)
+                return render(request, 'result.html', context)
             
             else: # form is valid but user is not registered
-                context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
-                return render(request, 'feedback_result.html', context)
+                context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
+                return render(request, 'result.html', context)
        
         else:
-            context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
-            return render(request, 'feedback_result.html', context)
+            context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
+            return render(request, 'result.html', context)
         
 class NoSupport(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'no-support.html')
-    def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        phone = request.POST['phone']
-        email = request.POST['email']
-        ticket = request.POST['ticket']
-
-        NoSupport.objects.create(name = name, phone = phone, email = email, ticket = ticket)
-
-        context = {}
-        context['message'] = 'اصطلاعات شما ثبت شد و تا ۲۴ ساعت با شما تماس گرفته خواهد شد'
-        
+        form = NoSupportForm
+        context = {'form': form}
         return render(request, 'no-support.html', context)
-
-# class ClassCancel(View):
-#     def get(self, request, *args, **kwargs):
-#         return render(request, 'class-cancel.html')
-#     def post(self, request, *args, **kwargs):
-#         phone = request.POST['phone']
-#         email = request.POST['email']
-#         ticket = request.POST['ticket']
+    
+    def post(self, request, *args, **kwargs):
+        form = NoSupport(request.POST)
+        if form.is_valid():
+            """is this user registered in course?"""
+            phone = form.cleaned_data.get('phone')
+            ticket = form.cleaned_data.get('ticket')
+            email = form.cleaned_data.get('email')
+            
+            # it's possible that user enter one of the above fields incorrectly so we must use query with or condition 
+            user = User.objects.get(Q(phone=phone) | Q(ticket=ticket) | Q(email=email))
+            
+            if user is not None:    
+                form.save()    
+                context = {'detail': 'اطلاعات شما ثبت و تا ۲۴ ساعت آینده با شما ارتباط گرفته خواهد شد'}        
+                return render(request, 'result.html', context)
+            
+            else: # form is valid but user is not registered
+                context = {'detail': 'متاسفانه ثبت درخواست شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
+                return render(request, 'result.html', context)
+       
+        else:
+            context = {'detail': 'متاسفانه ثبت درخواست شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
+            return render(request, 'result.html', context)
+        
 
 

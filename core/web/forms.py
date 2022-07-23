@@ -6,7 +6,7 @@ class FeedbackForm(forms.ModelForm):
         model = Feedback
         fields = ["subject", "name", "email", "phone", "description"]
 
-class NoSupport(forms.ModelForm):
+class NoSupportForm(forms.ModelForm):
     class Meta:
         model = NoSupport
         fields = ["name", "email", "phone", "ticket", "description"]
