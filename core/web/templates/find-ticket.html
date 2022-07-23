@@ -32,18 +32,13 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-15 p-b-20">
-
-
-
-				<form class="login100-form validate-form" method="post" action="/find-ticket"> {% csrf_token %}
+				<form class="login100-form validate-form" method="post" action="/find-ticket/"> 
+				{% csrf_token %}
 					<span class="login100-form-title">
 						<a href="/">
 						<img src="/static/welcome_page/images/footer-logo.png" alt="">
 					</a>
 					</span>
-					{% if message %}
-						<h3 style="color: red; margin-top: 5px;">{{ message }}</h3>
-					{% endif %}
 					<div class="wrap-input100 validate-input m-b-35" >
 						<input class="input100" type="text" name="ticket">
 						<span class="focus-input100" data-placeholder="کد بلیط"></span>

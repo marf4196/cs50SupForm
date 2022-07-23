@@ -12,10 +12,9 @@ class User(models.Model):
         we need to have all the cs50 users data so we can use queries for other end points
     """
     name = models.CharField(max_length=256, blank=False, null=False)
-    email = models.EmailField(null=False, blank=False)
-    phone = models.IntegerField(null=False, blank=False)
-    ticket = models.CharField(max_length=10, blank=False, null=False)
-    qr_code = models.ImageField(upload_to='media/qr_codes', blank=True)
+    email = models.EmailField(unique=True, null=False, blank=False)
+    phone = models.IntegerField(unique=True, null=False, blank=False)
+    ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
@@ -36,10 +35,10 @@ class Feedback(models.Model):
         return str(self.phone)
 
 class ClassAttend(models.Model):
-    name = models.CharField(max_length=256, blank=False, null=False)
-    email = models.EmailField(null=False, blank=False)
-    phone = models.IntegerField(null=False, blank=False)
-    ticket = models.CharField(max_length=10, blank=False, null=False)
+    name = models.CharField(unique=True, max_length=256, blank=False, null=False)
+    email = models.EmailField(unique=True, null=False, blank=False)
+    phone = models.IntegerField(unique=True, null=False, blank=False)
+    ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
     qr_code = models.ImageField(upload_to='media/qr_codes', blank=True)
     canceled = models.BooleanField(default=False)
     entered = models.BooleanField(default=False)
@@ -62,10 +61,10 @@ class ClassAttend(models.Model):
         super().save(*args, **kwargs)
 
 class ClassCancel(models.Model):
-    name = models.CharField(max_length=256, blank=False, null=False)
-    email = models.EmailField(null=False, blank=False)
-    phone = models.IntegerField(null=False, blank=False)
-    ticket = models.CharField(max_length=10, blank=False, null=False)
+    name = models.CharField(unique=True, max_length=256, blank=False, null=False)
+    email = models.EmailField(unique=True, null=False, blank=False)
+    phone = models.IntegerField(unique=True, null=False, blank=False)
+    ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 

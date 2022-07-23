@@ -10,3 +10,6 @@ class NoSupportForm(forms.ModelForm):
     class Meta:
         model = NoSupport
         fields = ["name", "email", "phone", "ticket", "description"]
+
+class TicketForm(forms.Form):
+    ticket = forms.CharField(max_length=6, required=True)

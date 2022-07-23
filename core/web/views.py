@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
-from web.forms import FeedbackForm, NoSupportForm
+from web.forms import FeedbackForm, NoSupportForm, TicketForm
 from .models import ClassAttend, Feedback, NoSupport, ClassCancel, ClassInfo
 from django.db.models import Q
 from web.models import User
 # Create your views here.
 class test_template(TemplateView):
-    template_name = 'result.html'
+    template_name = 'class-cancel.html'
 
 class WelcomePage(TemplateView):
     template_name = 'welcome.html'
@@ -47,23 +47,34 @@ class ClassAttend(View):
                 context['message'] = 'شما ثبت نام کرده بودید :)'
                 return render(request, 'class-attend.html', context)
 
+class ClassCancel(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'class-cancel.html')
+
+    def post(self, request, *args, **kwargs):
+        pass        
+
 class FindTicket(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'find-ticket.html')
+        form = TicketForm
+        context = {'form': form}
+        return render(request, 'find-ticket.html', context)
+
     def post(self, request, *args, **kwargs):
         ticket = request.POST['ticket']
-        qs = ClassAttend.objects.filter(ticket = ticket)
+        qs = ClassAttend.objects.filter(ticket=ticket)
         if qs.exists():
-            qs = ClassAttend.objects.get(ticket = ticket)
+            qs = ClassAttend.objects.get(ticket=ticket)
             if qs.canceled:
-                print('shoma sabt nametoon ro ghablan cancel kardid')
+                context = {'detail': 'ثبت نام حضوری شما با موفقیت لغو شد'} 
+                return render(request, 'result.html', context)
             else:
-                context = {}
-                context['qrcode'] = qs.qr_code
-                return render(request, 'download-page.html', context)
+                context = {'detail': 'متاسفانه لغو ثبت نام شما موفقیت آمیز نبود'} 
+                return render(request, 'result.html', context)
 
         else:
-            print('sabt nam nakardi')
+            context = {'detail': 'شما برای جلسه حضوری ثبت نام نکرده بوده اید'} 
+            return render(request, 'result.html', context)
 
 class Feedback(View):
     def get(self, request, *args, **kwargs):
