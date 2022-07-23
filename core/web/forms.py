@@ -1,5 +1,5 @@
 from django import forms
-from web.models import Feedback, NoSupport
+from web.models import Feedback, NoSupport, ClassAttend
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
@@ -13,3 +13,8 @@ class NoSupportForm(forms.ModelForm):
 
 class TicketForm(forms.Form):
     ticket = forms.CharField(max_length=6, required=True)
+
+class ClassAttendForm(forms.ModelForm):
+    class Meta:
+        model = ClassAttend
+        fields = ['name', 'email', 'phone', 'ticket']

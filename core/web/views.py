@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
-from web.forms import FeedbackForm, NoSupportForm, TicketForm
-from .models import ClassAttend, Feedback, NoSupport, ClassCancel, ClassInfo
+from web.forms import FeedbackForm, NoSupportForm, TicketForm, ClassAttendForm
+from .models import ClassAttend, NoSupport, ClassInfo, User
 from django.db.models import Q
 from web.models import User
 # Create your views here.
@@ -13,39 +13,55 @@ class WelcomePage(TemplateView):
 
 class ClassAttendView(View):
     def get(self, request, *args, **kwrags):
-        return render(request, 'class-attend.html')
-    def post(self, request, *args, **kwrags):
-        name = request.POST['name']
-        ticket = request.POST['ticket']
-        phone = request.POST['phone']
-        email = request.POST['email']
+        capacity = ClassInfo.objects.get(name='capacity_counter').counter
+        context = {'capacity': capacity}
+        return render(request, 'class-attend.html', context)
 
-        qs = ClassAttend.objects.filter(ticket = ticket)
-        if not qs.exists():
-            ClassAttend.objects.create(name = name, email = email, phone = phone, ticket = ticket)
-            qs = ClassAttend.objects.get(ticket = ticket)
-            # TODO send sms
-            context = {}
-            context['message'] = 'ثبت نام شما موفق بود'
-            context['qrcode'] = qs.qr_code
-            context['ticket'] = qs.ticket
-            return render(request, 'find-ticket.html', context)
-            
-        else:
-            qs = ClassAttend.objects.get(ticket = ticket)
-            if qs.canceled:
-                qs.canceled = False
+    def post(self, request, *args, **kwrags):
+        form = ClassAttendForm(request.POST)
+        if form.is_valid():
+            ticket = form.cleaned_data.get('ticket')
+            email = form.cleaned_data.get('email')
+            phone = form.cleaned_data.get('phone')
+
+            # we have to check if this user is registered or not
+            qs = User.objects.filter(ticket=ticket, email=email, phone=phone)
+            if not qs.exists():
+                context = {'detail': 'اطلاعات شما در لیست دانشجویان دوره مبانی ۱۴۰۱ وجود ندارد'} 
+                return render(request, 'result.html', context)
+
+
+            # user who is requesting is not allowed to register if he/she has canceled registration before
+            qs = ClassAttend.objects.filter(ticket=ticket, email=email, phone=phone, canceled=False)
+
+            if not qs.exists(): # user must be allowed to registered more than one time
+                # decrease capacity
+                qs = ClassInfo.objects.get(name='capacity_counter')
+                qs.counter -= 1
                 qs.save()
+
                 # TODO send sms
-                context = {}
-                context['message'] = 'ثبت نام شما موفق بود'
-                context['qrcode'] = qs.qr_code
-                context['ticket'] = qs.ticket
-                return render(request, 'find-ticket.html', context)
-            else:
-                context = {}
-                context['message'] = 'شما ثبت نام کرده بودید :)'
-                return render(request, 'class-attend.html', context)
+
+                user = form.save()
+                context = {
+                    'detail': 'ثبت نام شما با موفقیت انجام شد، در صورتی که بلیط شما به صورت خودکار دانلود نشد، از دکمه دانلود استفاده کنید',
+                    'link': f"/{user.qr_code}",
+                    'ticket': user.ticket,
+                }
+                return render(request, 'download-ticket.html', context)
+                
+            else: # user does exists
+                context = {
+                    'detail': 'شما قبلا برای حضور در این جلسه ثبت نام کردید، میتوانید از لینک زیر بلیط خود را دریافت کنید',
+                    'link': f"/{qs[0].qr_code}",
+                    'ticket': qs[0].ticket,
+                }
+                return render(request, 'download-ticket.html', context)
+
+        else: # form is not valid
+            context = {'detail': 'ورودی های ارسالی قابل قبول نمی باشد'} 
+            return render(request, 'result.html', context)
+
 
 class ClassCancelView(View):
     def get(self, request, *args, **kwargs):
@@ -72,13 +88,13 @@ class FindTicketView(View):
                     return render(request, 'result.html', context)
                 else:
                     context = {
-                        'detail': 'در صورتی که فایل بلیط شما دانلود نشده است بر روی دکمه زیر کلیک کنید',
-                        'link': f"/{qs.qr_code}"
+                            'detail': 'در صورتی که فایل بلیط شما دانلود نشده است بر روی دکمه زیر کلیک کنید',
+                            'link': f"/{qs.qr_code}",
+                            'ticket': qs.ticket
                         }
-                    print(f"/127.0.0.1:8000/{qs.qr_code}")
                     return render(request, 'download-ticket.html', context)
             else: # qs doesn't exist
-                context = {'detail': 'شما برای جلسه حضوری ثبت نام نکرده بوده اید'} 
+                context = {'detail': 'شما برای جلسه حضوری ثبت نام نکرده اید'} 
                 return render(request, 'result.html', context)
         else: # form is not valid
             context = {'detail': 'ورودی ارسالی قابل قبول نمی باشد'} 
@@ -144,5 +160,3 @@ class NoSupportView(View):
             context = {'detail': 'متاسفانه ثبت درخواست شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
             return render(request, 'result.html', context)
         
-
-

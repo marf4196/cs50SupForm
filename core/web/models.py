@@ -35,10 +35,10 @@ class Feedback(models.Model):
         return str(self.phone)
 
 class ClassAttend(models.Model):
-    name = models.CharField(unique=True, max_length=256, blank=False, null=False)
-    email = models.EmailField(unique=True, null=False, blank=False)
-    phone = models.IntegerField(unique=True, null=False, blank=False)
-    ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
+    name = models.CharField(max_length=256, blank=False, null=False)
+    email = models.EmailField(null=False, blank=False)
+    phone = models.IntegerField(null=False, blank=False)
+    ticket = models.CharField(max_length=10, blank=False, null=False)
     qr_code = models.ImageField(upload_to='media/qr_codes', blank=True)
     canceled = models.BooleanField(default=False)
     entered = models.BooleanField(default=False)
@@ -72,7 +72,8 @@ class ClassCancel(models.Model):
         return str(self.phone)
 
 class ClassInfo(models.Model):
-    counter = models.PositiveIntegerField()
+    name = models.CharField(max_length=100, default='capacity_counter')
+    counter = models.PositiveIntegerField(default=310)
     
     def __str__(self):
         return 'counter'
