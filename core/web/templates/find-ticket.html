@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="rtl">
 <head>
-	<title>Login V6</title>
+	<title>دانلود بلیط</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -32,44 +32,26 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-15 p-b-20">
-				<form class="login100-form validate-form">
+
+
+
+				<form class="login100-form validate-form" method="post" action="/find-ticket"> {% csrf_token %}
 					<span class="login100-form-title">
+						<a href="/">
 						<img src="/static/welcome_page/images/footer-logo.png" alt="">
+					</a>
 					</span>
-					<!-- <span class="login100-form-avatar">
-						<a href="/test"><img src="/static/welcome_page/images/avatar-01.jpg" alt="AVATAR"></a>
-					</span> -->
-
-					<div class="wrap-input100 validate-input m-t-15 m-b-35" data-validate = "Enter username">
-						<input class="input100" type="text" name="username">
-						<span class="focus-input100" data-placeholder="نام و نام خانوادگی"></span>
-					</div>
-
-					<div class="wrap-input100 validate-input m-b-35" data-validate="Enter password">
-						<input class="input100" type="password" name="pass">
-						<span class="focus-input100" data-placeholder="عنوان"></span>
-					</div>
-
-					
-					<div class="wrap-input100 validate-input m-b-35" data-validate = "Enter username">
-						<input class="input100" type="text" name="username">
-						<span class="focus-input100" data-placeholder="ایمیل"></span>
-					</div>
-
-					<div class="wrap-input100 validate-input m-b-50" data-validate="Enter password">
-						<input class="input100" type="password" name="pass">
-						<span class="focus-input100" data-placeholder="شماره تلفن"></span>
+					{% if message %}
+						<h3 style="color: red; margin-top: 5px;">{{ message }}</h3>
+					{% endif %}
+					<div class="wrap-input100 validate-input m-b-35" >
+						<input class="input100" type="text" name="ticket">
+						<span class="focus-input100" data-placeholder="کد بلیط"></span>
 					</div>
 					
-					<p class="tp_text">توضیحات</p>
-					<div class="wrap-input100 validate-input m-b-50" data-validate="Enter password">
-						<textarea class="form-control" id="missing" name="missing" rows="8">
-                        </textarea>
-					</div>
-
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
-							<a href="/test">توضیحات</a>
+						<button class="login100-form-btn" type="submit">
+								ثبت کد بلیط
 						</button>
 					</div>
 				</form>
