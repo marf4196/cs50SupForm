@@ -2,8 +2,12 @@ from django.contrib import admin
 from .models import Feedback, ClassAttend, ClassCancel, ClassInfo, NoSupport, User
 
 # Register your models here.
-
-admin.site.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'phone', 'ticket', 'created_time', 'updated_time']
+    search_fields = ['name', 'email', 'phone', 'ticket']
+    date_hierarchy = 'created_time'
+    ordering = ['-created_time']
+admin.site.register(User, UserAdmin)
 
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ['name', 'email', 'phone', 'subject', 'description', 'created_time', 'updated_time']
