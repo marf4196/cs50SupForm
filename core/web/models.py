@@ -1,4 +1,3 @@
-from pyexpat import model
 from django.db import models
 from django.forms import DateTimeField
 import qrcode
@@ -7,6 +6,22 @@ from django.core.files import File
 from PIL import Image, ImageDraw
 
 # Create your models here.
+
+class User(models.Model):
+    """
+        we need to have all the cs50 users data so we can use queries for other end points
+    """
+    name = models.CharField(max_length=256, blank=False, null=False)
+    email = models.EmailField(null=False, blank=False)
+    phone = models.IntegerField(null=False, blank=False)
+    ticket = models.CharField(max_length=10, blank=False, null=False)
+    qr_code = models.ImageField(upload_to='media/qr_codes', blank=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.phone} - {self.email}"
+
 
 class Feedback(models.Model):
     subject = models.CharField(max_length=256, null= False, blank= False)

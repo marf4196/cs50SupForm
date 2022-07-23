@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
-
 from web.forms import FeedbackForm
 from .models import ClassAttend, Feedback, NoSupport, ClassCancel, ClassInfo
-
+from django.db.models import Q
+from web.models import User
 # Create your views here.
 class test_template(TemplateView):
     template_name = 'feedback_result.html'
@@ -74,11 +74,25 @@ class Feedback(View):
     def post(self, request, *args, **kwargs):
         form = FeedbackForm(request.POST)
         if form.is_valid():
-            form.save()    
-            context = {'detail': 'نظر شما با موفقیت ثبت شد'}        
-            return render(request, 'feedback_result.html', context)
+            """is this user registered in course?"""
+            phone = form.cleaned_data.get('phone')
+            ticket = form.cleaned_data.get('ticket')
+            email = form.cleaned_data.get('email')
+            
+            # it's possible that user enter one of the above fields incorrectly so we must use query with or condition 
+            user = User.objects.get(Q(phone=phone) | Q(ticket=ticket) | Q(email=email))
+            
+            if user is not None:    
+                form.save()    
+                context = {'detail': 'نظر شما با موفقیت ثبت شد'}        
+                return render(request, 'feedback_result.html', context)
+            
+            else: # form is valid but user is not registered
+                context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
+                return render(request, 'feedback_result.html', context)
+       
         else:
-            context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد'} 
+            context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
             return render(request, 'feedback_result.html', context)
         
 class NoSupport(View):
