@@ -13,12 +13,12 @@ class Feedback(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
     email = models.EmailField(null=False, blank=False)
     phone = models.IntegerField(null=False, blank=False)
-    description = models.CharField(max_length=2048, blank=False, null=False)
+    description = models.TextField(blank=False, null=False)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
-        return self.phone
+    def __str__(self):
+        return str(self.phone)
 
 class ClassAttend(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
@@ -31,7 +31,7 @@ class ClassAttend(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.phone)
 
     def save(self, *args, **kwargs):
@@ -54,13 +54,13 @@ class ClassCancel(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.phone)
 
 class ClassInfo(models.Model):
     counter = models.PositiveIntegerField()
     
-    def __str__(self) -> str:
+    def __str__(self):
         return 'counter'
 
 class NoSupport(models.Model):
@@ -72,5 +72,5 @@ class NoSupport(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.phone)

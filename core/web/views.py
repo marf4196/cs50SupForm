@@ -1,19 +1,17 @@
-from email import message
-from multiprocessing import context
-from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
+
+from web.forms import FeedbackForm
 from .models import ClassAttend, Feedback, NoSupport, ClassCancel, ClassInfo
 
 # Create your views here.
-
-def indexView(request):
-    return HttpResponse('HEY')
+class test_template(TemplateView):
+    template_name = 'feedback_result.html'
 
 class WelcomePage(TemplateView):
     template_name = 'welcome.html'
 
-class Classattend(View):
+class ClassAttend(View):
     def get(self, request, *args, **kwrags):
         return render(request, 'class-attend.html')
     def post(self, request, *args, **kwrags):
@@ -67,23 +65,23 @@ class FindTicket(View):
         else:
             print('sabt nam nakardi')
 
-class FeedBack(View):
+class Feedback(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'feed-back.html')
+        form = FeedbackForm
+        context = {'form': form}
+        return render(request, 'feedback.html', context)
+    
     def post(self, request, *args, **kwargs):
-        name = request.POST['name']
-        phone = request.POST['phone']
-        email = request.POST['email']
-        subject = request.POST['subject']
-        description = request.POST['description']
-
-        Feedback.objects.create(name = name, phone = phone, email = email, subject = subject, description = description)
-
-        context = {}
-        context['message'] = 'ممنون بابت انتقاد/پیشنهادتون \n اطلاعات شما دریافت شد'
-        return render(request, 'feed-back.html', context)
-
-class Nosupport(View):
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()    
+            context = {'detail': 'نظر شما با موفقیت ثبت شد'}        
+            return render(request, 'feedback_result.html', context)
+        else:
+            context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد'} 
+            return render(request, 'feedback_result.html', context)
+        
+class NoSupport(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'no-support.html')
     def post(self, request, *args, **kwargs):
