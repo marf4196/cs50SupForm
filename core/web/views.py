@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import TemplateView, View
 from web.forms import (
     FeedbackForm, NoSupportForm, TicketForm, 
@@ -220,3 +220,8 @@ class StaffLogin(View):
         else: # form is not valid
             context = {'detail': 'ورودی های ارسالی قابل قبول نمی باشد'} 
             return render(request, 'result.html', context)
+
+class StaffLogout(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect('/staff-login/')
