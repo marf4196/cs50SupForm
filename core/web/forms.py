@@ -1,5 +1,5 @@
 from django import forms
-from web.models import Feedback, NoSupport, ClassAttend
+from web.models import Feedback, NoSupport, ClassAttend, ClassCancel
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
@@ -17,4 +17,9 @@ class TicketForm(forms.Form):
 class ClassAttendForm(forms.ModelForm):
     class Meta:
         model = ClassAttend
+        fields = ['name', 'email', 'phone', 'ticket']
+
+class ClassCancelForm(forms.ModelForm):
+    class Meta:
+        model = ClassCancel
         fields = ['name', 'email', 'phone', 'ticket']

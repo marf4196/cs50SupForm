@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
-from web.forms import FeedbackForm, NoSupportForm, TicketForm, ClassAttendForm
+from web.forms import FeedbackForm, NoSupportForm, TicketForm, ClassAttendForm, ClassCancelForm
 from .models import ClassAttend, NoSupport, ClassInfo, User
 from django.db.models import Q
 from web.models import User
@@ -65,10 +65,41 @@ class ClassAttendView(View):
 
 class ClassCancelView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'class-cancel.html')
+        capacity = ClassInfo.objects.get(name='capacity_counter').counter
+        context = {'capacity': capacity}
+        return render(request, 'class-cancel.html', context)
 
     def post(self, request, *args, **kwargs):
-        pass        
+        form = ClassCancelForm(request.POST)
+        if form.is_valid():
+            ticket = form.cleaned_data.get('ticket')
+            email = form.cleaned_data.get('email')
+            phone = form.cleaned_data.get('phone')
+
+            # user registration info must be found it CLassAttend
+            qs = ClassAttend.objects.filter(ticket=ticket, email=email, phone=phone)
+            if not qs.exists():
+                context = {'detail': 'اطلاعات شما در لیست ثبت نام حضوری وجود ندارد'} 
+                return render(request, 'result.html', context)
+            
+            qs[0].canceled = True
+            qs[0].save()
+            form.save()
+
+            # increase capacity
+            qs = ClassInfo.objects.get(name='capacity_counter')
+            qs.counter += 1
+            qs.save()
+
+            # TODO: Send SMS
+
+            context = {'detail': 'انصراف شما از حضور در جلسه با موفقیت ثبت شد'} 
+            return render(request, 'result.html', context)
+
+        else: # form is not valid
+            context = {'detail': 'ورودی های ارسالی قابل قبول نمی باشد'} 
+            return render(request, 'result.html', context)
+
 
 class FindTicketView(View):
     def get(self, request, *args, **kwargs):
