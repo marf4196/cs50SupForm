@@ -1,4 +1,5 @@
 from django import forms
+from pkg_resources import require
 from web.models import Feedback, NoSupport, ClassAttend, ClassCancel
 
 class FeedbackForm(forms.ModelForm):
@@ -23,3 +24,7 @@ class ClassCancelForm(forms.ModelForm):
     class Meta:
         model = ClassCancel
         fields = ['name', 'email', 'phone', 'ticket']
+
+class StaffLoginForm(forms.Form):
+    username = forms.CharField(max_length=255, required=True)
+    password = forms.CharField(max_length=255, required=True)

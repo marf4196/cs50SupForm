@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
-from web.forms import FeedbackForm, NoSupportForm, TicketForm, ClassAttendForm, ClassCancelForm
+from web.forms import (
+    FeedbackForm, NoSupportForm, TicketForm, 
+    ClassAttendForm, ClassCancelForm, StaffLoginForm)
 from .models import ClassAttend, NoSupport, ClassInfo, User
 from django.db.models import Q
 from web.models import User
+from django.contrib.auth import login, logout, authenticate
 # Create your views here.
 class test_template(TemplateView):
     template_name = 'download-page.html'
@@ -77,7 +80,7 @@ class ClassCancelView(View):
             phone = form.cleaned_data.get('phone')
 
             # user registration info must be found it CLassAttend
-            qs = ClassAttend.objects.filter(ticket=ticket, email=email, phone=phone)
+            qs = ClassAttend.objects.filter(ticket=ticket, email=email, phone=phone, canceled=False)
             if not qs.exists():
                 context = {'detail': 'اطلاعات شما در لیست ثبت نام حضوری وجود ندارد'} 
                 return render(request, 'result.html', context)
@@ -191,3 +194,29 @@ class NoSupportView(View):
             context = {'detail': 'متاسفانه ثبت درخواست شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
             return render(request, 'result.html', context)
         
+class StaffLogin(View):
+    def get(self, request, *args, **kwargs):
+        context = {}
+        if request.user.is_authenticated:
+            context['detail'] = 'شما قبلا وارد شدید'
+        return render(request, 'login.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = StaffLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            print(username, password)
+            user = authenticate(request, username=username, password=password)
+            print(user)
+            if user is not None:
+                login(request, user)
+                context = {'detail': 'با موفقیت وارد شدید'} 
+                return render(request, 'result.html', context)
+            else:
+                context = {'detail': 'نام کاربری یا رمز عبور اشتباه است'} 
+                return render(request, 'result.html', context)
+
+        else: # form is not valid
+            context = {'detail': 'ورودی های ارسالی قابل قبول نمی باشد'} 
+            return render(request, 'result.html', context)
