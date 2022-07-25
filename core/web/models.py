@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
-class User(models.Model):
+class Students(models.Model):
     """
         we need to have all the cs50 users data so we can use queries for other end points
     """
@@ -61,7 +61,7 @@ class ClassAttend(models.Model):
         super().save(*args, **kwargs)
 
 class ClassCancel(models.Model):
-    name = models.CharField(unique=True, max_length=256, blank=False, null=False)
+    name = models.CharField(unique=True, max_length=255, blank=False, null=False)
     email = models.EmailField(unique=True, null=False, blank=False)
     phone = models.IntegerField(unique=True, null=False, blank=False)
     ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)

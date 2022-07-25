@@ -3,9 +3,8 @@ from django.views.generic import TemplateView, View
 from web.forms import (
     FeedbackForm, NoSupportForm, TicketForm, 
     ClassAttendForm, ClassCancelForm, StaffLoginForm)
-from .models import ClassAttend, NoSupport, ClassInfo, User
+from web.models import ClassAttend, NoSupport, ClassInfo, Students
 from django.db.models import Q
-from web.models import User
 from django.contrib.auth import login, logout, authenticate
 # Create your views here.
 class test_template(TemplateView):
@@ -28,7 +27,7 @@ class ClassAttendView(View):
             phone = form.cleaned_data.get('phone')
 
             # we have to check if this user is registered or not
-            qs = User.objects.filter(ticket=ticket, email=email, phone=phone)
+            qs = Students.objects.filter(ticket=ticket, email=email, phone=phone)
             if not qs.exists():
                 context = {'detail': 'اطلاعات شما در لیست دانشجویان دوره مبانی ۱۴۰۱ وجود ندارد'} 
                 return render(request, 'result.html', context)
@@ -155,7 +154,7 @@ class FeedbackView(View):
             email = form.cleaned_data.get('email')
             
             # it's possible that user enter one of the above fields incorrectly so we must use query with or condition 
-            user = User.objects.get(Q(phone=phone) | Q(ticket=ticket) | Q(email=email))
+            user = Students.objects.get(Q(phone=phone) | Q(ticket=ticket) | Q(email=email))
             
             if user is not None:    
                 form.save()    
@@ -185,7 +184,7 @@ class NoSupportView(View):
             email = form.cleaned_data.get('email')
             
             # it's possible that user enter one of the above fields incorrectly so we must use query with or condition 
-            user = User.objects.get(Q(phone=phone) | Q(ticket=ticket) | Q(email=email))
+            user = Students.objects.get(Q(phone=phone) | Q(ticket=ticket) | Q(email=email))
             
             if user is not None:    
                 form.save()    
