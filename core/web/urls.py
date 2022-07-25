@@ -2,7 +2,7 @@ from django.urls import path
 from web.views import (
     WelcomePage, FeedbackView, FindTicketView, 
     ClassAttendView, NoSupportView, test_template, 
-    ClassCancelView, StaffLogin, StaffLogout)
+    ClassCancelView, StaffLogin, StaffLogout, ValidateQRcode)
 
 app_name = 'web'
 
@@ -16,4 +16,5 @@ urlpatterns = [
     path('no-support/', NoSupportView.as_view(), name='no-support'),
     path('staff-login/', StaffLogin.as_view(), name='staff-login'),
     path('staff-logout/', StaffLogout.as_view(), name='staff-logout'),
+    path('validate-code/<slug:slug>/', ValidateQRcode.as_view(), name='validate-code'), # slug = classAttend.slug
 ]

@@ -6,6 +6,8 @@ from web.forms import (
 from web.models import ClassAttend, NoSupport, ClassInfo, Students
 from django.db.models import Q
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # Create your views here.
 class test_template(TemplateView):
     template_name = 'download-page.html'
@@ -228,3 +230,8 @@ class StaffLogout(View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect('/staff-login/')
+
+class ValidateQRcode(View, LoginRequiredMixin):
+    def get(self, slug, request, *args, **kwargs):
+        # TODO: manage QRcode
+        pass
