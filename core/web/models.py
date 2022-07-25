@@ -4,7 +4,7 @@ import qrcode
 from io import BytesIO
 from django.core.files import File
 from PIL import Image, ImageDraw
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 class User(models.Model):
@@ -73,10 +73,10 @@ class ClassCancel(models.Model):
 
 class ClassInfo(models.Model):
     name = models.CharField(max_length=100, default='capacity_counter')
-    counter = models.PositiveIntegerField(default=310)
+    counter = models.PositiveIntegerField(default=310, validators=[MinValueValidator(0), MaxValueValidator(310)])
     
     def __str__(self):
-        return 'counter'
+        return f"{self.name} - {self.counter}"
 
 class NoSupport(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)

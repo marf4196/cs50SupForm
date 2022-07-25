@@ -1,5 +1,4 @@
 from django import forms
-from pkg_resources import require
 from web.models import Feedback, NoSupport, ClassAttend, ClassCancel
 
 class FeedbackForm(forms.ModelForm):

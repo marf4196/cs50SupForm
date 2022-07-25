@@ -212,9 +212,7 @@ class StaffLogin(View):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            print(username, password)
             user = authenticate(request, username=username, password=password)
-            print(user)
             if user is not None:
                 login(request, user)
                 context = {'detail': 'با موفقیت وارد شدید'} 
