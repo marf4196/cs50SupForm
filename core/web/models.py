@@ -5,6 +5,7 @@ from io import BytesIO
 from django.core.files import File
 from PIL import Image, ImageDraw
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.template.defaultfilters import slugify
 # Create your models here.
 
 class Students(models.Model):
@@ -35,7 +36,8 @@ class Feedback(models.Model):
         return str(self.phone)
 
 class ClassAttend(models.Model):
-    name = models.CharField(max_length=256, blank=False, null=False)
+    name = models.CharField(max_length=255, blank=False, null=False)
+    slug = models.SlugField(max_length=255, blank=False, null=False)
     email = models.EmailField(null=False, blank=False)
     phone = models.IntegerField(null=False, blank=False)
     ticket = models.CharField(max_length=10, blank=False, null=False)
@@ -49,6 +51,10 @@ class ClassAttend(models.Model):
         return str(self.phone)
 
     def save(self, *args, **kwargs):
+        # slug config
+        if not self.slug:
+            self.slug = slugify(f"{self.name}_week4")
+        # qr code config
         qrcode_image = qrcode.make(self.ticket)
         canvas = Image.new('RGB', (290,290), 'white')
         draw = ImageDraw.Draw(canvas)

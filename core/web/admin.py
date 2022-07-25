@@ -17,7 +17,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 admin.site.register(Feedback, FeedbackAdmin)
 
 class ClassAttendAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'phone', 'ticket','qr_code','entered', 'canceled', 'created_time', 'updated_time']
+    list_display = ['name', 'slug', 'email', 'phone', 'ticket','qr_code','entered', 'canceled', 'created_time', 'updated_time']
     search_fields = ['email', 'phone', 'ticket']
     date_hierarchy = 'created_time'
     ordering = ['-created_time']
