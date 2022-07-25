@@ -21,6 +21,10 @@ class Students(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.phone} - {self.email}"
+    
+    class Meta:
+        verbose_name = "دانشجو دوره"
+        verbose_name_plural = "لیست دانشجویان دوره"
 
 
 class Feedback(models.Model):
@@ -34,6 +38,10 @@ class Feedback(models.Model):
 
     def __str__(self):
         return str(self.phone)
+
+    class Meta:
+        verbose_name = "نقد و انتقاد"
+        verbose_name_plural = "نقد و انتقادات"
 
 class ClassAttend(models.Model):
     name = models.CharField(max_length=255, blank=False, null=False)
@@ -65,6 +73,10 @@ class ClassAttend(models.Model):
         self.qr_code.save(file_name, File(buffer), save=False)
         canvas.close()
         super().save(*args, **kwargs)
+    
+    class Meta:
+        verbose_name = "شرکت کننده کلاس حضوری"
+        verbose_name_plural = "لیست شرکت کنندگان کلاس حضوری"
 
 class ClassCancel(models.Model):
     name = models.CharField(unique=True, max_length=255, blank=False, null=False)
@@ -77,12 +89,21 @@ class ClassCancel(models.Model):
     def __str__(self):
         return str(self.phone)
 
+    class Meta:
+        verbose_name = "فرد کنسل کننده کلاس حضوری"
+        verbose_name_plural = "لیست کنسل کنندگان کلاس حضوری"
+
+
 class ClassInfo(models.Model):
     name = models.CharField(max_length=100, default='capacity_counter')
     counter = models.PositiveIntegerField(default=310, validators=[MinValueValidator(0), MaxValueValidator(310)])
     
     def __str__(self):
         return f"{self.name} - {self.counter}"
+
+    class Meta:
+        verbose_name = "ظرفیت کلاس حضوری"
+        verbose_name_plural = "ظرفیت کلاس حضوری"
 
 class NoSupport(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
@@ -95,3 +116,7 @@ class NoSupport(models.Model):
 
     def __str__(self):
         return str(self.phone)
+
+    class Meta:
+        verbose_name = "فرد بدون پشتیبان"
+        verbose_name_plural = "لیست افرادی بدون پشتیبان"
