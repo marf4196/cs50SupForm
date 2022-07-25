@@ -37,9 +37,15 @@ class ClassAttendView(View):
             # user who is requesting is not allowed to register if he/she has canceled registration before
             qs = ClassAttend.objects.filter(ticket=ticket, email=email, phone=phone, canceled=False)
 
-            if not qs.exists(): # user must be allowed to registered more than one time
-                # decrease capacity
+            if not qs.exists(): # user must not be allowed to registered more than one time
+                
+                # if capacity is completed user can not register
                 qs = ClassInfo.objects.get(name='capacity_counter')
+                if qs.counter < 0:
+                    context = {'detail': 'متاسفانه ظرفیت ثبت نام حضوری به پایان رسیده'} 
+                    return render(request, 'result.html', context)
+
+                # decrease capacity
                 qs.counter -= 1
                 qs.save()
 
@@ -53,7 +59,7 @@ class ClassAttendView(View):
                 }
                 return render(request, 'download-ticket.html', context)
                 
-            else: # user does exists
+            else: # user has registered already
                 context = {
                     'detail': 'شما قبلا برای حضور در این جلسه ثبت نام کردید، میتوانید از لینک زیر بلیط خود را دریافت کنید',
                     'link': f"/{qs[0].qr_code}",
