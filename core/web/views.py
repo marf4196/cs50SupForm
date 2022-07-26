@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView, View
 from web.forms import (
@@ -158,7 +159,7 @@ class FeedbackView(View):
             # it's possible that user enter one of the above fields incorrectly so we must use query with or condition 
             user = Students.objects.get(Q(phone=phone) | Q(ticket=ticket) | Q(email=email))
             
-            if user is not None:    
+            if user is not None: # TODO if none of the phone ticket email is valid it will return an error    
                 form.save()    
                 context = {'detail': 'نظر شما با موفقیت ثبت شد'}        
                 return render(request, 'result.html', context)
@@ -188,7 +189,7 @@ class NoSupportView(View):
             # it's possible that user enter one of the above fields incorrectly so we must use query with or condition 
             user = Students.objects.get(Q(phone=phone) | Q(ticket=ticket) | Q(email=email))
             
-            if user is not None:    
+            if user is not None: #TODO if none of the phone ticket email is valid it will return an error    
                 form.save()    
                 context = {'detail': 'اطلاعات شما ثبت و تا ۲۴ ساعت آینده با شما ارتباط گرفته خواهد شد'}        
                 return render(request, 'result.html', context)
@@ -232,6 +233,29 @@ class StaffLogout(View):
         return redirect('/staff-login/')
 
 class ValidateQRcode(View, LoginRequiredMixin):
-    def get(self, slug, request, *args, **kwargs):
-        # TODO: manage QRcode
-        pass
+    def get(self, request, slug, **kwargs): # you cant take slug and *args
+        if request.user.is_authenticated: # only staff can view this
+            ticket = slug[0:6]
+            qs = ClassAttend.objects.filter(ticket = ticket)
+            if qs.exists():
+                qs = ClassAttend.objects.get(ticket = ticket)
+                if qs.canceled: # checks if user has canceled his registration
+                    context = {'detail': 'ثبت نام قبلا کنسل شده'}
+                    context['ok'] = 0
+                    return render(request, 'result.html', context)
+                if qs.entered: # checks if user has entered
+                    context = {'detail': 'قبلا وارد شده'}
+                    context['ok'] = 0
+                    return render(request, 'result.html', context)
+                # if none of above condition is true so student can enter the class
+                qs.entered = True
+                qs.save()
+                context = {'detail': 'میتواند وارد شود'}
+                context['ok'] = 1
+                return render(request, 'result.html', context)
+
+            else: # cant find user with that qrcode (it will happen only if they edit url)
+                context = {'detail': 'برای کلاس حضوری ثبت نام نشده'}
+                return render(request, 'result.html', context)
+        else:
+            return redirect('/staff-login/')

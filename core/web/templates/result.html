@@ -43,7 +43,11 @@
 				</span>
 
 				<div class="wrap-input100 validate-input m-t-15 m-b-35">
-					<h5 style="margin-bottom: 10px; margin-top: 50px; text-align: center;">{{detail}}</h5>
+					{% if ok == 1 %}
+					<h3 style="margin-bottom: 10px; margin-top: 50px; text-align: center; color: green;">{{ detail }}</h3>
+					{% else %}
+					<h3 style="margin-bottom: 10px; margin-top: 50px; text-align: center; color: red;">{{ detail }}</h3>
+					{% endif %}
 				</div>
 			</div>
 		</div>
