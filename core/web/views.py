@@ -37,7 +37,10 @@ class ClassAttendView(View):
 
 
             # user who is requesting is not allowed to register if he/she has canceled registration before
-            qs = ClassAttend.objects.filter(ticket=ticket, email=email, phone=phone, canceled=False)
+            # there was a bug if canceled is true was in qs, user can register again but when a user with 2 registraion
+            # 1 canceled and 1 is not canceled want to download ticket it will raise an error:
+            # get() returned more than one ClassAttend -- it returned 2!
+            qs = ClassAttend.objects.filter(ticket=ticket, email=email, phone=phone)
 
             if not qs.exists(): # user must not be allowed to registered more than one time
                 
@@ -62,12 +65,24 @@ class ClassAttendView(View):
                 return render(request, 'download-ticket.html', context)
                 
             else: # user has registered already
-                context = {
-                    'detail': 'شما قبلا برای حضور در این جلسه ثبت نام کردید، میتوانید از لینک زیر بلیط خود را دریافت کنید',
-                    'link': f"/{qs[0].qr_code}",
-                    'ticket': qs[0].ticket,
-                }
-                return render(request, 'download-ticket.html', context)
+                qs = ClassAttend.objects.get(ticket = ticket)
+                # user registered but has attribiute canceled = true so we make it false
+                if qs.canceled:
+                    qs.canceled = False
+                    context = {
+                    'detail': 'ثبت نام شما با موفقیت انجام شد، در صورتی که بلیط شما به صورت خودکار دانلود نشد، از دکمه دانلود استفاده کنید',
+                    'link': f"/{qs.qr_code}",
+                    'ticket': qs.ticket,
+                    }
+                    return render(request, 'download-ticket.html', context)
+                # user registered with attribiute canceled = false
+                else:
+                    context = {
+                        'detail': 'شما قبلا برای حضور در این جلسه ثبت نام کردید، میتوانید از لینک زیر بلیط خود را دریافت کنید',
+                        'link': f"/{qs.qr_code}",
+                        'ticket': qs.ticket,
+                    }
+                    return render(request, 'download-ticket.html', context)
 
         else: # form is not valid
             context = {'detail': 'ورودی های ارسالی قابل قبول نمی باشد'} 
@@ -93,8 +108,9 @@ class ClassCancelView(View):
                 context = {'detail': 'اطلاعات شما در لیست ثبت نام حضوری وجود ندارد'} 
                 return render(request, 'result.html', context)
             
-            qs[0].canceled = True
-            qs[0].save()
+            qs = ClassAttend.objects.get(ticket=ticket)
+            qs.canceled = True
+            qs.save()
             form.save()
 
             # increase capacity
@@ -174,7 +190,7 @@ class FeedbackView(View):
         
 class NoSupportView(View):
     def get(self, request, *args, **kwargs):
-        form = NoSupportForm
+        form = NoSupportForm(request.POST)
         context = {'form': form}
         return render(request, 'no-support.html', context)
     
