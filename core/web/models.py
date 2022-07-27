@@ -122,7 +122,14 @@ class NoSupport(models.Model):
         verbose_name_plural = "لیست افرادی بدون پشتیبان"
 
 class SupportSurveyHistory(models.Model):
-    ticket = models.CharField(max_length=6, blank=False, null=False)
+    student = models.OneToOneField(Students, related_name="student", on_delete=models.CASCADE)
     survey_counter = models.PositiveIntegerField(default=0)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.student} - {self.survey_counter}"
+
+    class Meta:
+        verbose_name = "تاریخچه محدودید ثبت نظر برای TA ها"
+        verbose_name_plural = "تاریخچه محدودید ثبت نظر برای TA ها"
