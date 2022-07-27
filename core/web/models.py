@@ -120,3 +120,9 @@ class NoSupport(models.Model):
     class Meta:
         verbose_name = "فرد بدون پشتیبان"
         verbose_name_plural = "لیست افرادی بدون پشتیبان"
+
+class SupportSurveyHistory(models.Model):
+    ticket = models.CharField(max_length=6, blank=False, null=False)
+    survey_counter = models.PositiveIntegerField(default=0)
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
