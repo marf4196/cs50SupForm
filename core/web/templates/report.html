@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>rating form</title>
+  <link rel="stylesheet" href="/static/style/style.css" type="text/css">
+  <link rel="stylesheet" href="/static/vendor/bootstrap.min.css" type="text/css">
+</head>
+<body>
+
+<div id="app" class="row m-0">
+  <Cs50>
+    <h1 class="cs-title">فرم انتقادات و پیشنهادات</h1>
+
+    <form method="post" action="/feedback" class="rp-content text-center">
+      {% csrf_token %}
+      <input type="text" class="t1" maxlength="35" placeholder="نام و نام خانوادگی" name="name">
+      <input type="tel" class="t1" maxlength="15" placeholder="شماره تلفن" name="phone">
+      <input type="email" class="t1" maxlength="35" placeholder="ایمیل" name="email">
+      <input type="text" class="t1" maxlength="35" placeholder="عنوان" name="subject">
+      <textarea placeholder="توضیحات" class="t3" name="description"></textarea>
+
+      <button class="t5">ثبت</button>
+    </div>
+  </Cs50>
+</div>
+
+<script src="/static/vendor/vue.global.js"></script>
+<script src="/static/vendor/bootstrap.bundle.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

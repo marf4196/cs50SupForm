@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>rating form</title>
+  <link rel="stylesheet" href="./style/style.css" type="text/css">
+  <link rel="stylesheet" href="./style/report.css" type="text/css">
+  <link rel="stylesheet" href="./vendor/bootstrap.min.css" type="text/css">
+</head>
+<body>
+
+<div id="app" class="row m-0">
+  <Cs50>
+    <h1 class="cs-title" dir="rtl">
+      فرم ثبت نام حضوری هفته سه
+      <br>
+      <span>{{ attend }} نفر باقی مانده</span>
+    </h1>
+
+    <div class="rp-content text-center">
+      <input type="text" class="t1" maxlength="35" placeholder="نام و نام خانوادگی">
+      <input type="text" class="t1" maxlength="15" placeholder="کد بلیط">
+      <input type="email" class="t1" maxlength="35" placeholder="ایمیل">
+      <input type="tel" class="t1" maxlength="15" placeholder="شماره تلفن">
+
+      <button class="t5" :disabled="attend === 0">ثبت نام</button>
+    </div>
+  </Cs50>
+
+
+</div>
+
+<script src="./vendor/vue.global.js"></script>
+<script src="./vendor/bootstrap.bundle.min.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

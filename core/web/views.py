@@ -14,7 +14,7 @@ class test_template(TemplateView):
     template_name = 'download-page.html'
 
 class WelcomePage(TemplateView):
-    template_name = 'welcome.html'
+    template_name = 'index.html'
 
 class ClassAttendView(View):
     def get(self, request, *args, **kwrags):
@@ -162,7 +162,7 @@ class FeedbackView(View):
     def get(self, request, *args, **kwargs):
         form = FeedbackForm
         context = {'form': form}
-        return render(request, 'feedback.html', context)
+        return render(request, 'report.html', context)
     
     def post(self, request, *args, **kwargs):
         form = FeedbackForm(request.POST)
