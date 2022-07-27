@@ -20,7 +20,7 @@ class Students(models.Model):
     updated_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} - {self.phone} - {self.email}"
+        return f"{self.name} - {self.phone} - {self.email} - {self.ticket}"
     
     class Meta:
         verbose_name = "دانشجو دوره"

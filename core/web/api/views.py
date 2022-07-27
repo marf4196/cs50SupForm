@@ -17,7 +17,7 @@ class CheckToken(APIView):
         serializer.is_valid(raise_exception=True)
         token = serializer.data['token']
         try:
-            user = SupportSurveyHistory.objects.get(ticket=token)
+            user = SupportSurveyHistory.objects.get(student__ticket=token)
         
         # check to see if the user token is registered in database or not
         except SupportSurveyHistory.DoesNotExist:
