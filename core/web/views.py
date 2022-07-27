@@ -33,7 +33,7 @@ class ClassAttendView(View):
             qs = Students.objects.filter(ticket=ticket, email=email, phone=phone)
             if not qs.exists():
                 context = {'detail': 'اطلاعات شما در لیست دانشجویان دوره مبانی ۱۴۰۱ وجود ندارد'} 
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
 
 
             # user who is requesting is not allowed to register if he/she has canceled registration before
@@ -48,7 +48,7 @@ class ClassAttendView(View):
                 qs = ClassInfo.objects.get(name='capacity_counter')
                 if qs.counter < 0:
                     context = {'detail': 'متاسفانه ظرفیت ثبت نام حضوری به پایان رسیده'} 
-                    return render(request, 'result.html', context)
+                    return render(request, 'report.html', context)
 
                 # decrease capacity
                 qs.counter -= 1
@@ -86,7 +86,7 @@ class ClassAttendView(View):
 
         else: # form is not valid
             context = {'detail': 'ورودی های ارسالی قابل قبول نمی باشد'} 
-            return render(request, 'result.html', context)
+            return render(request, 'report.html', context)
 
 
 class ClassCancelView(View):
@@ -106,7 +106,7 @@ class ClassCancelView(View):
             qs = ClassAttend.objects.filter(ticket=ticket, email=email, phone=phone, canceled=False)
             if not qs.exists():
                 context = {'detail': 'اطلاعات شما در لیست ثبت نام حضوری وجود ندارد'} 
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
             
             qs = ClassAttend.objects.get(ticket=ticket)
             qs.canceled = True
@@ -121,11 +121,11 @@ class ClassCancelView(View):
             # TODO: Send SMS
 
             context = {'detail': 'انصراف شما از حضور در جلسه با موفقیت ثبت شد'} 
-            return render(request, 'result.html', context)
+            return render(request, 'report.html', context)
 
         else: # form is not valid
             context = {'detail': 'ورودی های ارسالی قابل قبول نمی باشد'} 
-            return render(request, 'result.html', context)
+            return render(request, 'report.html', context)
 
 
 class FindTicketView(View):
@@ -143,7 +143,7 @@ class FindTicketView(View):
                 qs = ClassAttend.objects.get(ticket=ticket)
                 if qs.canceled:
                     context = {'detail': 'ثبت نام حضوری شما لغو شده و امکان دریافت بلیط را ندارید'} 
-                    return render(request, 'result.html', context)
+                    return render(request, 'report.html', context)
                 else:
                     context = {
                             'detail': 'در صورتی که فایل بلیط شما دانلود نشده است بر روی دکمه زیر کلیک کنید',
@@ -153,10 +153,10 @@ class FindTicketView(View):
                     return render(request, 'download-ticket.html', context)
             else: # qs doesn't exist
                 context = {'detail': 'شما برای جلسه حضوری ثبت نام نکرده اید'} 
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
         else: # form is not valid
             context = {'detail': 'ورودی ارسالی قابل قبول نمی باشد'} 
-            return render(request, 'result.html', context)
+            return render(request, 'report.html', context)
 
 class FeedbackView(View):
     def get(self, request, *args, **kwargs):
@@ -178,15 +178,15 @@ class FeedbackView(View):
             if user is not None: # TODO if none of the phone ticket email is valid it will return an error    
                 form.save()    
                 context = {'detail': 'نظر شما با موفقیت ثبت شد'}        
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
             
             else: # form is valid but user is not registered
                 context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
        
         else:
             context = {'detail': 'متاسفانه ثبت نظر شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
-            return render(request, 'result.html', context)
+            return render(request, 'report.html', context)
         
 class NoSupportView(View):
     def get(self, request, *args, **kwargs):
@@ -208,15 +208,15 @@ class NoSupportView(View):
             if user is not None: #TODO if none of the phone ticket email is valid it will return an error    
                 form.save()    
                 context = {'detail': 'اطلاعات شما ثبت و تا ۲۴ ساعت آینده با شما ارتباط گرفته خواهد شد'}        
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
             
             else: # form is valid but user is not registered
                 context = {'detail': 'متاسفانه ثبت درخواست شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
        
         else:
             context = {'detail': 'متاسفانه ثبت درخواست شما با مشکل مواجه شد، ممکن است شما اطلاعات فرم را بدرستی وارد نکرده و یا از دانشجو های دوره نباشید'} 
-            return render(request, 'result.html', context)
+            return render(request, 'report.html', context)
         
 class StaffLogin(View):
     def get(self, request, *args, **kwargs):
@@ -234,14 +234,14 @@ class StaffLogin(View):
             if user is not None:
                 login(request, user)
                 context = {'detail': 'با موفقیت وارد شدید'} 
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
             else:
                 context = {'detail': 'نام کاربری یا رمز عبور اشتباه است'} 
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
 
         else: # form is not valid
             context = {'detail': 'ورودی های ارسالی قابل قبول نمی باشد'} 
-            return render(request, 'result.html', context)
+            return render(request, 'report.html', context)
 
 class StaffLogout(View):
     def get(self, request, *args, **kwargs):
@@ -258,20 +258,20 @@ class ValidateQRcode(View, LoginRequiredMixin):
                 if qs.canceled: # checks if user has canceled his registration
                     context = {'detail': 'ثبت نام قبلا کنسل شده'}
                     context['ok'] = 0
-                    return render(request, 'result.html', context)
+                    return render(request, 'report.html', context)
                 if qs.entered: # checks if user has entered
                     context = {'detail': 'قبلا وارد شده'}
                     context['ok'] = 0
-                    return render(request, 'result.html', context)
+                    return render(request, 'report.html', context)
                 # if none of above condition is true so student can enter the class
                 qs.entered = True
                 qs.save()
                 context = {'detail': 'میتواند وارد شود'}
                 context['ok'] = 1
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
 
             else: # cant find user with that qrcode (it will happen only if they edit url)
                 context = {'detail': 'برای کلاس حضوری ثبت نام نشده'}
-                return render(request, 'result.html', context)
+                return render(request, 'report.html', context)
         else:
             return redirect('/staff-login/')
