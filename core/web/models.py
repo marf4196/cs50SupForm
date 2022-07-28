@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.forms import DateTimeField
 import qrcode
@@ -20,7 +21,7 @@ class Students(models.Model):
     updated_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} - {self.phone} - {self.email}"
+        return f"{self.name} - {self.phone} - {self.email} - {self.ticket}"
     
     class Meta:
         verbose_name = "دانشجو دوره"
@@ -120,3 +121,35 @@ class NoSupport(models.Model):
     class Meta:
         verbose_name = "فرد بدون پشتیبان"
         verbose_name_plural = "لیست افرادی بدون پشتیبان"
+
+class SupportSurveyCounter(models.Model):
+    student = models.OneToOneField(Students, related_name="student", on_delete=models.CASCADE)
+    survey_counter = models.PositiveIntegerField(default=0)
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.student} - {self.survey_counter}"
+
+    class Meta:
+        verbose_name = "تاریخچه محدودید ثبت نظر برای TA ها"
+        verbose_name_plural = "تاریخچه محدودید ثبت نظر برای TA ها"
+
+class SupporterSurvey(models.Model):
+    name = models.CharField(max_length=500, null=False, blank=False)
+    token = models.CharField(max_length=6, null=False, blank=False)
+    satisfaction = models.BooleanField(null=False, blank=False) 
+    supporter = models.IntegerField(blank=False, null=False)
+    description = models.TextField(null=False, blank=False)
+    image = models.ImageField(null=True, blank=True)
+    validate_status = models.BooleanField(default=False) # if this gets True, new score will be send via api
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return f"{self.name} - {self.token} - {self.satisfaction} - {self.validate_status}"
+    
+    class Meta:
+        verbose_name = "نظرسنجی TA ها"
+        verbose_name_plural = "نظرسنجی TA ها"

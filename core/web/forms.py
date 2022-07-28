@@ -1,5 +1,5 @@
 from django import forms
-from web.models import Feedback, NoSupport, ClassAttend, ClassCancel
+from web.models import Feedback, NoSupport, ClassAttend, ClassCancel, SupporterSurvey
 
 class FeedbackForm(forms.ModelForm):
     class Meta:

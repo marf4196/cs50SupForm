@@ -16,26 +16,26 @@
         <h1 class="cs-title">فرم ثبت نظر پشتیبان های علمی</h1>
         <p class="cs-content" dir="rtl">
             من
-            <input type="text" class="t1 cs1" maxlength="35" placeholder="نام و نام خانوادگی">
+            <input type="text" name="name" class="t1 cs1" maxlength="35" placeholder="نام و نام خانوادگی">
             با کد ایوند
-            <input type="text" class="t1 cs2" maxlength="10" placeholder="XXXXX">
+            <input type="text" name="token" class="t1 cs2" maxlength="10" placeholder="XXXXXX">
             از
-            <select class="form-select t2" aria-label="پشتیبان">
+            <select class="form-select t2" name="supporter" aria-label="پشتیبان">
                 <option selected>پشتیبان</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
             </select>
             راضی
-            <select class="form-select t2" aria-label="پشتیبان">
+            <select class="form-select t2" name="satisfaction" aria-label="پشتیبان">
                 <option value="1" selected>هستم</option>
                 <option value="2">نیستم</option>
             </select>
         </p>
 
-        <textarea placeholder="به دلیل" class="t3"></textarea>
+        <textarea placeholder="به دلیل" name="description" class="t3"></textarea>
 
-        <input class="form-control t4" type="file" id="formFileMultiple">
+        <input class="form-control t4" name="image" type="file" id="formFileMultiple">
 
         <button class="t5">ثبت</button>
     </Cs50>

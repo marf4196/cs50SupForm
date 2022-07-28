@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 import csv
-from web.models import User
+from web.models import Students
 from core.settings import BASE_DIR
 
 class Command(BaseCommand):
@@ -16,7 +16,7 @@ class Command(BaseCommand):
             reader = csv.reader(f)
             for row in reader:
                 print(row[0])
-                user = User.objects.get_or_create(
+                user = Students.objects.get_or_create(
                     ticket = row[0],
                     name = f"{row[1]} - {row[2]}",
                     email = row[3],

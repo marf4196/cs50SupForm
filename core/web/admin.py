@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Feedback, ClassAttend, ClassCancel, ClassInfo, NoSupport, Students
+from .models import Feedback, ClassAttend, ClassCancel, ClassInfo, NoSupport, Students, SupportSurveyCounter, SupporterSurvey
 
 # Register your models here.
 class StudentsAdmin(admin.ModelAdmin):
@@ -41,3 +41,17 @@ class NoSupportAdmin(admin.ModelAdmin):
     ordering = ['-created_time']
 admin.site.register(NoSupport, NoSupportAdmin)
 
+class SupportSurveyCounterAdmin(admin.ModelAdmin):
+    list_display = ['student', 'survey_counter', 'created_time', 'updated_time']
+    search_fields = ['ticket']
+    date_hierarchy = 'created_time'
+    ordering = ['-created_time']
+admin.site.register(SupportSurveyCounter, SupportSurveyCounterAdmin)
+
+class SupporterSurveyAdmin(admin.ModelAdmin):
+    list_display = ['name', 'token', 'supporter', 'satisfaction', 'validate_status', 'created_time', 'updated_time']
+    search_fields = ['name', 'supporter', 'token']
+    list_filter = ['validate_status']
+    date_hierarchy = 'created_time'
+    ordering = ['-created_time']
+admin.site.register(SupporterSurvey, SupporterSurveyAdmin)
