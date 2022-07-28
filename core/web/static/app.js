@@ -1,12 +1,7 @@
-const { createApp, computed, watch } = Vue
+const { createApp, computed, watch, reactive, onMounted } = Vue
 
 const app = createApp({
-    delimiters: ['[[', ']]'],
-    data() {
-        return {
-            attend: 7
-        }
-    }
+    delimiters: ['[[', ']]']
 })
 
 const Form = {

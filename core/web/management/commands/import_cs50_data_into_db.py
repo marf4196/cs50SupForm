@@ -8,8 +8,8 @@ class Command(BaseCommand):
 
     def __init__(self, *args, **kwargs):
         super(Command,self).__init__(*args, **kwargs)
-        # self.path = (BASE_DIR / 'attendes_list_summer2022.csv')
-        self.path = (BASE_DIR / 'test.csv')
+        self.path = (BASE_DIR / 'attendes_list_summer2022.csv')
+        #self.path = (BASE_DIR / 'test.csv')
 
     def handle(self, *args, **options):
         with open(self.path) as f:

@@ -139,7 +139,7 @@ class SupporterSurvey(models.Model):
     name = models.CharField(max_length=500, null=False, blank=False)
     token = models.CharField(max_length=6, null=False, blank=False)
     satisfaction = models.BooleanField(null=False, blank=False) 
-    supporter = models.IntegerField(blank=False, null=False)
+    supporter = models.CharField(max_length=500, blank=False, null=False)
     description = models.TextField(null=False, blank=False)
     image = models.ImageField(null=True, blank=True)
     validate_status = models.BooleanField(default=False) # if this gets True, new score will be send via api

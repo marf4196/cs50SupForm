@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>rating form</title>
+  <link rel="stylesheet" href="/static/style/style.css" type="text/css">
+  <link rel="stylesheet" href="/static/vendor/bootstrap.min.css" type="text/css">
+</head>
+<body>
+
+<div id="app" class="row m-0">
+    <Cs50>
+        <h1 class="cs-title" dir="rtl">
+            ثبت نام شما با موفقیت انجام شد!
+            <br>
+            <span> :کد ایوند شما {{ticket}}</span>
+        </h1>
+
+        <div class="rp-content text-center"><a id="dn" href="{{ link }}" download><button class="t5">دانلود بلیط</button></a></div>
+    </Cs50>
+
+    <Error>
+        {{detail}}
+    </Error>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("dn").click()
+})
+</script>
+<script src="/static/vendor/vue.global.js"></script>
+<script src="/static/vendor/bootstrap.bundle.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
