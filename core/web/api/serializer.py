@@ -7,5 +7,5 @@ class CheckTokenSerializer(serializers.Serializer):
 class SupporterSurveySerializers(serializers.ModelSerializer):
     class Meta:
         model = SupporterSurvey
-        fields = ['name', 'token', 'supporter', 'validate_status', 'description', 'image']
+        fields = ['name', 'token', 'supporter', 'satisfaction', 'description', 'image']
     
