@@ -12,24 +12,32 @@
 <body>
 
 <div id="app" class="row m-0">
-  <Cs50>
-    <h1 class="cs-title">فرم انتقادات و پیشنهادات</h1>
+    <Cs50>
+        <h1 class="cs-title">فرم انتقادات و پیشنهادات</h1>
 
-    <form method="post" action="/feedback" class="rp-content text-center">
-      {% csrf_token %}
-      <input type="text" class="t1" maxlength="35" placeholder="نام و نام خانوادگی" name="name">
-      <input type="tel" class="t1" maxlength="15" placeholder="شماره تلفن" name="phone">
-      <input type="email" class="t1" maxlength="35" placeholder="ایمیل" name="email">
-      <input type="text" class="t1" maxlength="35" placeholder="عنوان" name="subject">
-      <textarea placeholder="توضیحات" class="t3" name="description"></textarea>
+        <form method="post" action="/feedback" class="rp-content text-center">
+          {% csrf_token %}
+          <input type="text" class="t1" maxlength="35" placeholder="نام و نام خانوادگی" name="name">
+          <input type="tel" class="t1" maxlength="15" placeholder="شماره تلفن" name="phone">
+          <input type="email" class="t1" maxlength="35" placeholder="ایمیل" name="email">
+          <input type="text" class="t1" maxlength="35" placeholder="عنوان" name="subject">
+          <textarea placeholder="توضیحات" class="t3" name="description"></textarea>
 
-      <button class="t5">ثبت</button>
-    </div>
-  </Cs50>
-  <div>
-    <p>{{detail}}</p>
-  </div>
+          <button class="t5">ثبت</button>
+        </form>
+    </Cs50>
+
+    <Error class="d-none">
+        {{ detail }}
+    </Error>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const d = {% if detail %} "{{ detail | safe }}" {% else %} null {% endif %}
+if (d !== null) document.getElementById("error").classList.remove("d-none")
+})
+</script>
 
 <script src="/static/vendor/vue.global.js"></script>
 <script src="/static/vendor/bootstrap.bundle.min.js"></script>

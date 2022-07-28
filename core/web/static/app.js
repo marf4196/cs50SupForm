@@ -21,7 +21,18 @@ const Form = {
         "  </div>"
 }
 
+const Error = {
+    setup() {},
+    methods: {
+      closeError() {
+          document.getElementById("error").classList.add("d-none")
+      }
+    },
+    template: `<div id="error" class="d-flex justify-content-between align-items-center" dir="rtl"><p class="mb-0"><slot/></p> <p class="mb-0 c" @click="closeError">بستن</p></div>`
+}
+
 app.component("Cs50", Form)
+app.component("Error", Error)
 
 app.config.compilerOptions.isCustomElement = (tag) => tag.includes('-')
 

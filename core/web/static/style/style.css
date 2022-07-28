@@ -20,6 +20,23 @@
     font-family: Dana, sans-serif;
 }
 
+#error
+{
+    height: 50px;
+    background-color: var(--primary);
+    color: white;
+    position: fixed;
+    bottom: 10px;
+    width: 65%;
+    right: 10px;
+    left: 10px;
+    box-shadow: 0 0 10px 5px gray;
+}
+
+#error > .c {
+    cursor: pointer;
+}
+
 #app > .banner
 {
     background-image: url("../img/bg1.jpg");
@@ -152,6 +169,21 @@
     #app .banner
     {
         height: 200px;
+    }
+
+    #error
+    {
+        width: unset!important;
+        flex-wrap: wrap;
+        height: unset;
+        padding: 10px!important;
+    }
+
+    #error > .c
+    {
+        background-color: var(--primary-dark);
+        padding: 10px 20px;
+        margin-top: 10px!important;
     }
 
     #app .content
