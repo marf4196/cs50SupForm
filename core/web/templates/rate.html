@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/static/favicon.ico"/>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>rating form</title>
+    <title>فرم ثبت نظر پشتیبان های علمی</title>
     <link rel="stylesheet" href="/static/style/style.css" type="text/css">
     <link rel="stylesheet" href="/static/vendor/bootstrap.min.css" type="text/css">
 </head>
@@ -39,7 +40,7 @@
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-       const xhttp = new XMLHttpRequest()
+        const xhttp = new XMLHttpRequest()
         let text = ""
 
         xhttp.onload = function() {
@@ -48,8 +49,32 @@
             document.querySelector("#app .cs-content select[name='supporter']").innerHTML = text
        }
 
-        xhttp.open("GET", "http://168.119.92.30:9090/api/v1/query?query=round(increase(message_count%5B365d%5D))");
-        xhttp.send();
+        xhttp.open("GET", "http://168.119.92.30:9090/api/v1/query?query=round(increase(message_count%5B365d%5D))")
+        xhttp.send()
+
+        const base = document.querySelector("#app .cs-content")
+
+        document.querySelector("#app .cs-content .t5").onclick = () =>
+        {
+            const formData = new FormData()
+
+            formData.set("name", base.querySelector("input[name='name']").value)
+            formData.set("token", base.querySelector("input[name='token']").value)
+            formData.set("supporter", base.querySelector("select[name='supporter']").value)
+            formData.set("satisfaction", base.querySelector("select[name='satisfaction']").value)
+            formData.set("description", base.querySelector("textarea[name='description']").value)
+
+            xhttp.onload = function() {
+
+            }
+
+            xhttp.open("POST", "/api/v1/check_token/")
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+            xhttp.send(`{"token": "${base.querySelector("input[name='token']").value}"}`)
+
+        }
+
+
     })
 </script>
 <script src="/static/vendor/vue.global.js"></script>

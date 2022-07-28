@@ -16,5 +16,5 @@ urlpatterns = [
     path('staff-login', StaffLogin.as_view(), name='staff-login'),
     path('staff-logout', StaffLogout.as_view(), name='staff-logout'),
     path('validate-code/<slug:slug>', ValidateQRcode.as_view(), name='validate-code'),  # slug = classAttend.slug
-    path('rate', rate_template.as_view(), name='rate-template'),
+    #path('rate', rate_template.as_view(), name='rate-template'),
 ]
