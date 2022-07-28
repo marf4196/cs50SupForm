@@ -121,7 +121,7 @@ class NoSupport(models.Model):
         verbose_name = "فرد بدون پشتیبان"
         verbose_name_plural = "لیست افرادی بدون پشتیبان"
 
-class SupportSurveyHistory(models.Model):
+class SupportSurveyCounter(models.Model):
     student = models.OneToOneField(Students, related_name="student", on_delete=models.CASCADE)
     survey_counter = models.PositiveIntegerField(default=0)
     created_time = models.DateTimeField(auto_now_add=True)
@@ -133,3 +133,21 @@ class SupportSurveyHistory(models.Model):
     class Meta:
         verbose_name = "تاریخچه محدودید ثبت نظر برای TA ها"
         verbose_name_plural = "تاریخچه محدودید ثبت نظر برای TA ها"
+
+class SupporterSurvey(models.Model):
+    name = models.CharField(max_length=500, null=False, blank=False)
+    token = models.CharField(max_length=6, null=False, blank=False)
+    supporter = models.IntegerField(blank=False, null=False)
+    status = models.BooleanField(null=False, blank=False)
+    description = models.TextField(null=False, blank=False)
+    image = models.ImageField(null=True, blank=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return f"{self.name} - {self.token} - {self.status} - {self.status}"
+    
+    class Meta:
+        verbose_name = "نظرسنجی TA ها"
+        verbose_name_plural = "نظرسنجی TA ها"
