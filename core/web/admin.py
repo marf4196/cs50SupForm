@@ -49,9 +49,9 @@ class SupportSurveyCounterAdmin(admin.ModelAdmin):
 admin.site.register(SupportSurveyCounter, SupportSurveyCounterAdmin)
 
 class SupporterSurveyAdmin(admin.ModelAdmin):
-    list_display = ['name', 'token', 'supporter', 'status', 'created_time', 'updated_time']
+    list_display = ['name', 'token', 'supporter', 'satisfaction', 'validate_status', 'created_time', 'updated_time']
     search_fields = ['name', 'supporter', 'token']
-    list_filter = ['status']
+    list_filter = ['validate_status']
     date_hierarchy = 'created_time'
     ordering = ['-created_time']
 admin.site.register(SupporterSurvey, SupporterSurveyAdmin)

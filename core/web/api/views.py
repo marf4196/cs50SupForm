@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .serializer import CheckTokenSerializer, SupportersSurveySerializers
+from .serializer import CheckTokenSerializer, SupporterSurveySerializers
 from web.models import SupportSurveyCounter
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.response import Response
@@ -34,10 +34,10 @@ class CheckToken(APIView):
             return Response({"success": "نظر شما با موفقیت ثبت شد"}, status=HTTP_200_OK)
 
 class SubmitSupportersSurvey(APIView):
-    serializer_class = SupportersSurveySerializers
+    serializer_class = SupporterSurveySerializers
     
     def post(self, request):
-        serializer = SupportersSurveySerializers(data=request.data)
+        serializer = SupporterSurveySerializers(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"success": "نظر شما با موفقیت ثبت شد"}, status=HTTP_200_OK)
