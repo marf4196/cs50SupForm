@@ -6,9 +6,8 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>rating form</title>
-  <link rel="stylesheet" href="./style/style.css" type="text/css">
-  <link rel="stylesheet" href="./style/report.css" type="text/css">
-  <link rel="stylesheet" href="./vendor/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="/static/style/style.css" type="text/css">
+  <link rel="stylesheet" href="/static/vendor/bootstrap.min.css" type="text/css">
 </head>
 <body>
 
@@ -16,14 +15,26 @@
   <Cs50>
     <h1 class="cs-title">بلیط حضوری تون رو گم کردید؟</h1>
 
-    <div class="ls-content text-center">
+    <form class="rp-content text-center" method="post" action="/find-ticket">
+        {% csrf_token %}
+      <input type="text" class="t1" maxlength="15" name="ticket" placeholder="کد بلیط">
 
-    </div>
+      <button class="t5">ثبت کد بلیط</button>
+    </form>
   </Cs50>
-</div>
 
-<script src="./vendor/vue.global.js"></script>
-<script src="./vendor/bootstrap.bundle.min.js"></script>
-<script src="./app.js"></script>
+    <Error class="d-none">
+        {{ detail }}
+    </Error>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const p = {% if detail %} "{{ detail | safe }}" {% else %} null {% endif %}
+    if (p !== null) document.getElementById("error").classList.remove("d-none")
+})
+</script>
+<script src="/static/vendor/vue.global.js"></script>
+<script src="/static/vendor/bootstrap.bundle.min.js"></script>
+<script src="/static/app.js"></script>
 </body>
 </html>
