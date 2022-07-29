@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-squ!%j3=*$6e!3j!98$9wj!s8cu#d8)kr=l8d4x$j-jpjz1h4u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False 
 
 ALLOWED_HOSTS = ['*']
 
@@ -75,23 +75,23 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cs50_db',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'USER': 'cs50',
+        'PASSWORD': 'CS50xR@sht',
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'cs50App',
-#         'HOST': '127.0.0.1',
-#         'PORT': '3306',
-#         'USER': 'cs50-user',
-#         'PASSWORD': 'cs50-pass',
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -128,6 +128,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "web" / "static"
+STATICFILES_DIRS = [
+            BASE_DIR / "staticfiles",
+            ]
 
 MEDIA_URL =''
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR / 'core' ))

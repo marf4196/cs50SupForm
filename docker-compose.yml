@@ -27,7 +27,20 @@ services:
       - "80:80"
     depends_on:
       - django
-  
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: CS50xIraq
+ 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+
 volumes:
   static_volume:
   media_volume:

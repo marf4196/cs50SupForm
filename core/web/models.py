@@ -14,8 +14,8 @@ class Students(models.Model):
         we need to have all the cs50 users data so we can use queries for other end points
     """
     name = models.CharField(max_length=256, blank=False, null=False)
-    email = models.EmailField(unique=True, null=False, blank=False)
-    phone = models.IntegerField(unique=True, null=False, blank=False)
+    email = models.EmailField(unique=False, null=False, blank=False)
+    phone = models.BigIntegerField(unique=False, null=False, blank=False)
     ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
@@ -32,7 +32,7 @@ class Feedback(models.Model):
     subject = models.CharField(max_length=256, null= False, blank= False)
     name = models.CharField(max_length=256, blank=False, null=False)
     email = models.EmailField(null=False, blank=False)
-    phone = models.IntegerField(null=False, blank=False)
+    phone = models.BigIntegerField(null=False, blank=False)
     description = models.TextField(blank=False, null=False)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
@@ -48,7 +48,7 @@ class ClassAttend(models.Model):
     name = models.CharField(max_length=255, blank=False, null=False)
     slug = models.SlugField(max_length=255, blank=False, null=False)
     email = models.EmailField(null=False, blank=False)
-    phone = models.IntegerField(null=False, blank=False)
+    phone = models.BigIntegerField(null=False, blank=False)
     ticket = models.CharField(max_length=10, blank=False, null=False)
     qr_code = models.ImageField(upload_to='media/qr_codes', blank=True)
     canceled = models.BooleanField(default=False)
@@ -64,7 +64,7 @@ class ClassAttend(models.Model):
         if not self.slug:
             self.slug = slugify(f"{self.name}_week4")
         # qr code config
-        qrcode_image = qrcode.make(f"http:'/'/127.0.0.1:8000/validate-code/{self.ticket}-week4/")
+        qrcode_image = qrcode.make("http:"+"/"+f"/94.101.184.218:8000/validate-code/{self.ticket}-week4/")
         canvas = Image.new('RGB', (420,420), 'white')
         draw = ImageDraw.Draw(canvas)
         canvas.paste(qrcode_image)
@@ -82,7 +82,7 @@ class ClassAttend(models.Model):
 class ClassCancel(models.Model):
     name = models.CharField(unique=True, max_length=255, blank=False, null=False)
     email = models.EmailField(unique=True, null=False, blank=False)
-    phone = models.IntegerField(unique=True, null=False, blank=False)
+    phone = models.BigIntegerField(unique=True, null=False, blank=False)
     ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
@@ -97,7 +97,7 @@ class ClassCancel(models.Model):
 
 class ClassInfo(models.Model):
     name = models.CharField(max_length=100, default='capacity_counter')
-    counter = models.PositiveIntegerField(default=310, validators=[MinValueValidator(0), MaxValueValidator(310)])
+    counter = models.PositiveIntegerField(default=350, validators=[MinValueValidator(0), MaxValueValidator(350)])
     
     def __str__(self):
         return f"{self.name} - {self.counter}"
@@ -109,7 +109,7 @@ class ClassInfo(models.Model):
 class NoSupport(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
     email = models.EmailField(null=False, blank=False)
-    phone = models.IntegerField(null=False, blank=False)
+    phone = models.BigIntegerField(null=False, blank=False)
     ticket = models.CharField(max_length=10, blank=False, null=False)
     description = models.CharField(max_length=2048, blank=False, null=False)
     created_time = models.DateTimeField(auto_now_add=True)

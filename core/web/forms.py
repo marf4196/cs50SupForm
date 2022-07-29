@@ -9,7 +9,7 @@ class FeedbackForm(forms.ModelForm):
 class NoSupportForm(forms.ModelForm):
     class Meta:
         model = NoSupport
-        fields = ["name", "email", "phone", "ticket", "description"]
+        fields = ["name", "email", "phone", "ticket"]
 
 class TicketForm(forms.Form):
     ticket = forms.CharField(max_length=6, required=True)
