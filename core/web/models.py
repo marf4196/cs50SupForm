@@ -17,6 +17,7 @@ class Students(models.Model):
     email = models.EmailField(unique=False, null=False, blank=False)
     phone = models.BigIntegerField(unique=False, null=False, blank=False)
     ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
+    supporter_vote = models.ForeignKey("TA", on_delete=models.SET_NULL, null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
@@ -153,3 +154,17 @@ class SupporterSurvey(models.Model):
     class Meta:
         verbose_name = "نظرسنجی TA ها"
         verbose_name_plural = "نظرسنجی TA ها"
+
+class TA(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+    discord_id = models.CharField(max_length=255, null=False, blank=False)
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.discord_id}"
+    
+    class Meta:
+        verbose_name = "ها TA لیست"
+        verbose_name_plural = "ها TA لیست"
+        
