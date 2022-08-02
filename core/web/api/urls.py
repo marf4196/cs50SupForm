@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import CheckToken, SubmitSupportersSurvey
+from .views import SupportSurvey
 
 urlpatterns = [
-    path('check_token/', CheckToken.as_view(), name='check_token'),
-    path('submit_supporters_survey/', SubmitSupportersSurvey.as_view(), name='submit_supporters_survey'),
+    path('submit_TA_survey/', SupportSurvey.as_view(), name='submit_TA_survey'),
 ]

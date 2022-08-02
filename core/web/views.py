@@ -1,10 +1,9 @@
-from multiprocessing import context
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView, View
 from web.forms import (
     FeedbackForm, NoSupportForm, TicketForm, 
     ClassAttendForm, ClassCancelForm, StaffLoginForm)
-from web.models import ClassAttend, NoSupport, ClassInfo, Students
+from web.models import ClassAttend, ClassInfo, Students
 from django.db.models import Q
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin

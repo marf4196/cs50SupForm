@@ -1,6 +1,4 @@
-from email.policy import default
 from django.db import models
-from django.forms import DateTimeField
 import qrcode
 from io import BytesIO
 from django.core.files import File
@@ -17,7 +15,6 @@ class Students(models.Model):
     email = models.EmailField(unique=False, null=False, blank=False)
     phone = models.BigIntegerField(unique=False, null=False, blank=False)
     ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
-    supporter_vote = models.ForeignKey("TA", on_delete=models.SET_NULL, null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
@@ -123,33 +120,17 @@ class NoSupport(models.Model):
         verbose_name = "فرد بدون پشتیبان"
         verbose_name_plural = "لیست افرادی بدون پشتیبان"
 
-class SupportSurveyCounter(models.Model):
-    student = models.OneToOneField(Students, related_name="student", on_delete=models.CASCADE)
-    survey_counter = models.PositiveIntegerField(default=0)
-    created_time = models.DateTimeField(auto_now_add=True)
-    updated_time = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.student} - {self.survey_counter}"
-
-    class Meta:
-        verbose_name = "تاریخچه محدودید ثبت نظر برای TA ها"
-        verbose_name_plural = "تاریخچه محدودید ثبت نظر برای TA ها"
-
 class SupporterSurvey(models.Model):
-    name = models.CharField(max_length=500, null=False, blank=False)
-    token = models.CharField(max_length=6, null=False, blank=False)
+    user = models.ForeignKey(Students, on_delete=models.DO_NOTHING, blank=False, null=False)
+    supporter = models.ForeignKey("TA", on_delete=models.DO_NOTHING, null=False, blank=False)
     satisfaction = models.BooleanField(null=False, blank=False) 
-    supporter = models.CharField(max_length=500, blank=False, null=False)
-    description = models.TextField(null=False, blank=False)
-    image = models.ImageField(null=True, blank=True)
-    validate_status = models.BooleanField(default=False) # if this gets True, new score will be send via api
+    description = models.TextField(null=True, blank=True)
+    image_url = models.ImageField(upload_to="TA_evidence/", blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
-
     def __str__(self):
-        return f"{self.name} - {self.token} - {self.satisfaction} - {self.validate_status}"
+        return f"{self.user} - {self.supporter} - {self.satisfaction}"
     
     class Meta:
         verbose_name = "نظرسنجی TA ها"
@@ -167,4 +148,4 @@ class TA(models.Model):
     class Meta:
         verbose_name = "ها TA لیست"
         verbose_name_plural = "ها TA لیست"
-        
+
