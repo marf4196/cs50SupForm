@@ -16,12 +16,15 @@
     <Cs50>
         <h1 class="cs-title">فرم ثبت نظر پشتیبان های علمی</h1>
         <p class="cs-content" dir="rtl">
+            {% csrf_token %}
             من
-            <input type="text" name="name" class="t1 cs1" maxlength="35" placeholder="نام و نام خانوادگی">
-            با کد ایوند
-            <input type="text" name="token" class="t1 cs2" maxlength="10" placeholder="XXXXXXX">
+            <input type="text" name="name" class="t1 cs1" maxlength="255" placeholder="نام و نام خانوادگی">
+            با ایمیل
+            <input type="email" name="email" class="t1 cs1" maxlength="35" placeholder="ایمیل">
+            و با شماره تلفن
+            <input type="tel" name="phone" class="t1 cs1" maxlength="35" placeholder="شماره تلفن">
             از
-            <select class="form-select t2" name="supporter" aria-label="پشتیبان">
+            <select class="form-select t2" name="discord_id" aria-label="پشتیبان">
                 <option selected>...</option>
             </select>
             راضی
@@ -44,37 +47,38 @@
         let text = ""
 
         xhttp.onload = function() {
-            const rsp = JSON.parse(this.responseText)["data"]["result"]
-            for (let i = 0; i < rsp.length; i++) text += `<option value="${rsp[i]["metric"]["name"]}" ${i === 0 ? "selected" : ""}>${rsp[i]["metric"]["name"]}</option>`
-            document.querySelector("#app .cs-content select[name='supporter']").innerHTML = text
+            const rsp = JSON.parse(this.responseText)
+
+            for (let i = 0; i < rsp.length; i++) text += `<option value="${rsp[i]}" ${i === 0 ? "selected" : ""}>${rsp[i]}</option>`
+            document.querySelector("#app .cs-content select[name='discord_id']").innerHTML = text
        }
 
-        xhttp.open("GET", "http://168.119.92.30:9090/api/v1/query?query=round(increase(message_count%5B365d%5D))")
+        xhttp.open("GET", "/static/ta.json")
         xhttp.send()
 
         const base = document.querySelector("#app .cs-content")
 
-        document.querySelector("#app .cs-content .t5").onclick = () =>
+        document.querySelector("#app .t5").onclick = () =>
         {
             const formData = new FormData()
 
             formData.set("name", base.querySelector("input[name='name']").value)
-            formData.set("token", base.querySelector("input[name='token']").value)
-            formData.set("supporter", base.querySelector("select[name='supporter']").value)
+            formData.set("email", base.querySelector("input[name='email']").value)
+            formData.set("phone", base.querySelector("input[name='phone']").value)
+            formData.set("discord_id", base.querySelector("select[name='discord_id']").value)
             formData.set("satisfaction", base.querySelector("select[name='satisfaction']").value)
-            formData.set("description", base.querySelector("textarea[name='description']").value)
+            formData.set("description", document.querySelector("#app textarea").value)
+            formData.set("csrfmiddlewaretoken", document.querySelector("#app input[name='csrfmiddlewaretoken']").value)
 
             xhttp.onload = function() {
-
+                alert("done")
+                alert(this.responseText)
             }
 
-            xhttp.open("POST", "/api/v1/check_token/")
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-            xhttp.send(`{"token": "${base.querySelector("input[name='token']").value}"}`)
+            xhttp.open("POST", "/api/v1/submit_TA_survey/")
+            xhttp.send(formData)
 
         }
-
-
     })
 </script>
 <script src="/static/vendor/vue.global.js"></script>

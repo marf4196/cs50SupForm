@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Feedback, ClassAttend, ClassCancel, 
-    ClassInfo, NoSupport, Students, SupporterSurvey)
+    ClassInfo, NoSupport, Students, SupporterSurvey, TA)
 
 # Register your models here.
 class StudentsAdmin(admin.ModelAdmin):
@@ -49,3 +49,10 @@ class SupporterSurveyAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_time'
     ordering = ['-created_time']
 admin.site.register(SupporterSurvey, SupporterSurveyAdmin)
+
+class TAAdmin(admin.ModelAdmin):
+    list_display = ['name', 'discord_id', 'created_time', 'updated_time']
+    search_fields = ['name', 'discord_id']
+    date_hierarchy = 'created_time'
+    ordering = ['-created_time']
+admin.site.register(TA, TAAdmin)

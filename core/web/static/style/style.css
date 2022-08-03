@@ -56,7 +56,6 @@
     font-size: 30px;
 }
 
-
 #app > .content .cs-title > span
 {
     font-weight: normal;
@@ -66,8 +65,10 @@
 
 #app > .content .cs-content
 {
+    line-height: 50px;
+    text-align: center;
     margin-top: 40px;
-    max-width: 800px;
+    max-width: 860px;
     width: 100%;
 }
 
@@ -194,12 +195,6 @@
         align-items: flex-start!important;
         order: 1;
     }
-
-    #app > .content .cs-content
-    {
-        line-height: 50px;
-        text-align: center;
-    }
 }
 
 #app .rp-content
@@ -220,7 +215,6 @@
     margin-top: 30px;
 }
 
-
 #app .rp-content .t5
 {
     margin-top: 10px
@@ -240,7 +234,6 @@
 
 @media screen and (max-width: 450px)
 {
-
     #app .banner
     {
         height: 150px;
