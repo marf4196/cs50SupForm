@@ -39,8 +39,6 @@
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    const d = {{ capacity | safe }} ;
-    if (d <= 0) document.querySelector("#app .rp-content .t5").disabled = true
 
     const p = {% if detail %} "{{ detail | safe }}" {% else %} null {% endif %}
     if (p !== null) document.getElementById("error").classList.remove("d-none")
