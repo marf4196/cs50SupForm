@@ -1,0 +1,266 @@
+:root {
+    --primary: #A8063A;
+    --primary-dark: #8c0731;
+}
+
+@font-face {
+    font-family: Dana;
+    src: url("../font/Dana-Regular.ttf");
+}
+
+@font-face {
+    font-family: Dana;
+    font-weight: bold;
+    src: url("../font/Dana-Medium.ttf");
+}
+
+#app
+{
+    min-height: 100vh;
+    font-family: Dana, sans-serif;
+}
+
+#error
+{
+    height: 50px;
+    background-color: var(--primary);
+    color: white;
+    position: fixed;
+    bottom: 10px;
+    width: 65%;
+    right: 10px;
+    left: 10px;
+    box-shadow: 0 0 10px 5px gray;
+}
+
+#error > .c {
+    cursor: pointer;
+}
+
+#app > .banner
+{
+    background-image: url("../img/bg1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#app > .content
+{
+    padding: 20px;
+}
+
+#app > .content .cs-title
+{
+    font-weight: bold;
+    text-align: center;
+    font-size: 30px;
+}
+
+#app > .content .cs-title > span
+{
+    font-weight: normal;
+    text-align: center;
+    font-size: 20px;
+}
+
+#app > .content .cs-content
+{
+    line-height: 50px;
+    text-align: center;
+    margin-top: 40px;
+    max-width: 860px;
+    width: 100%;
+}
+
+#app > .content .t1
+{
+    border: none;
+    line-height: unset;
+    direction: rtl;
+    text-align: center;
+    height: 25px;
+    outline: none!important;
+    margin: 0 5px;
+    border-bottom: 1px solid var(--primary);
+}
+
+#app > .content .cs-content .t2
+{
+    direction: rtl;
+    border: none;
+    outline: none!important;
+    margin: 0 5px;
+    width: 100px;
+    display: inline;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    border-radius: 0;
+    background-position: left .20rem center!important;
+    border-bottom: 1px solid var(--primary);
+}
+
+#app > .content .t3
+{
+    direction: rtl;
+    outline: none!important;
+    width: 100%;
+    border-radius: 0;
+    padding: 10px;
+    margin-top: 20px;
+    resize: none;
+    height: 200px;
+    border: 1px solid var(--primary);
+}
+
+#app > .content .t4
+{
+    margin-top: 20px;
+    border: 1px solid var(--primary);
+    border-radius: 0;
+}
+
+#app > .content .t5
+{
+    margin-top: 20px;
+    border: none;
+    width: 100%;
+    transition: 0.2s;
+    height: 40px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 0;
+    outline: none;
+}
+
+#app > .content .t5:disabled
+{
+    border: none!important;
+    opacity: 0.5;
+}
+
+#app > .content .t5:focus, #app > .content .t5:hover
+{
+    border: 4px solid var(--primary-dark);
+}
+
+#app > .content .t4::file-selector-button
+{
+    background-color: var(--primary) !important;
+    color: white;
+}
+
+#app > .content .t2:focus, #app > .content .t2:hover, #app > .content .t4:focus, #app > .content .t4:hover
+{
+    box-shadow: none!important;
+}
+
+#app > .content .t1.cs2
+{
+    width: 100px;
+}
+
+@media screen and (max-width: 686px)
+{
+    #app > div
+    {
+        width: 100%;
+    }
+
+    #app .banner
+    {
+        height: 200px;
+    }
+
+    #error
+    {
+        width: unset!important;
+        flex-wrap: wrap;
+        height: unset;
+        padding: 10px!important;
+    }
+
+    #error > .c
+    {
+        background-color: var(--primary-dark);
+        padding: 10px 20px;
+        margin-top: 10px!important;
+    }
+
+    #app .content
+    {
+        overflow-y: scroll;
+        height: calc(100vh - 200px);
+        padding: 30px 15px 15px;
+        align-items: flex-start!important;
+        order: 1;
+    }
+}
+
+#app .rp-content
+{
+    width: 100%;
+    margin-top: 20px;
+    max-width: 400px;
+}
+
+#app .rp-content .t1,
+#app .rp-content .t3,
+#app .rp-content .t5
+{
+    margin-right: unset!important;
+    margin-left: unset!important;
+    max-width: 400px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+#app .rp-content .t5
+{
+    margin-top: 10px
+}
+
+#app .rp-content .t1
+{
+    height: 40px;
+    padding-bottom: 15px;
+    text-align: right;
+}
+
+#app .rp-content .t3
+{
+    height: 200px;
+}
+
+@media screen and (max-width: 450px)
+{
+    #app .banner
+    {
+        height: 150px;
+    }
+
+    #app .content
+    {
+        height: 100%;
+    }
+
+    #app > .content .t1.cs1
+    {
+        width: 150px;
+    }
+
+    #app > .content .cs-title
+    {
+        font-size: 25px;
+    }
+
+    #app > .content .cs-content
+    {
+        margin-top: 20px;
+    }
+
+    #app > .content .t3
+    {
+        margin-top: 10px;
+    }
+}
