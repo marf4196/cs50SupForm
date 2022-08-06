@@ -75,7 +75,7 @@
                 alert(this.responseText)
             }
 
-            xhttp.open("POST", "/api/v1/submit_TA_survey/")
+            xhttp.open("POST", window.location.origin+"/api/v1/submit_TA_survey/")
             xhttp.send(formData)
 
         }
