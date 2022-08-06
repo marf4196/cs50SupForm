@@ -5,8 +5,8 @@ from .models import (
 
 # Register your models here.
 class StudentsAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'phone', 'ticket', 'created_time', 'updated_time']
-    search_fields = ['name', 'email', 'phone', 'ticket']
+    list_display = ['name', 'email', 'phone', 'created_time', 'updated_time']
+    search_fields = ['name', 'email', 'phone']
     date_hierarchy = 'created_time'
     ordering = ['-created_time']
 admin.site.register(Students, StudentsAdmin)
@@ -19,14 +19,14 @@ class FeedbackAdmin(admin.ModelAdmin):
 admin.site.register(Feedback, FeedbackAdmin)
 
 class ClassAttendAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'email', 'phone', 'ticket','qr_code','entered', 'canceled', 'created_time', 'updated_time']
-    search_fields = ['email', 'phone', 'ticket']
+    list_display = ['name', 'slug', 'email', 'phone','qr_code','entered', 'canceled', 'created_time', 'updated_time']
+    search_fields = ['email', 'phone']
     date_hierarchy = 'created_time'
     ordering = ['-created_time']
 admin.site.register(ClassAttend, ClassAttendAdmin)
 
 class ClassCancelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'phone', 'ticket','created_time', 'updated_time']
+    list_display = ['name', 'email', 'phone','created_time', 'updated_time']
     search_fields = ['email', 'phone']
     date_hierarchy = 'created_time'
     ordering = ['-created_time']
@@ -37,7 +37,7 @@ class ClassInfoAdmin(admin.ModelAdmin):
 admin.site.register(ClassInfo, ClassInfoAdmin)
 
 class NoSupportAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'phone', 'ticket','created_time', 'updated_time']
+    list_display = ['name', 'email', 'phone', 'created_time', 'updated_time']
     search_fields = ['email', 'phone']
     date_hierarchy = 'created_time'
     ordering = ['-created_time']

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-squ!%j3=*$6e!3j!98$9wj!s8cu#d8)kr=l8d4x$j-jpjz1h4u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False 
+DEBUG = True 
 
 ALLOWED_HOSTS = ['*']
 
@@ -127,21 +127,32 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-STATIC_URL = '/static/'
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATIC_ROOT = BASE_DIR / "static"
-STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, "staticfiles")
-            ]
+# STATIC_URL = '/static/'
+# STATIC_DIR = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = BASE_DIR / "static"
+# STATICFILES_DIRS = [
+#         os.path.join(BASE_DIR, "staticfiles")
+#             ]
 
 
-#STATIC_URL = '/static/'
-#STATIC_ROOT = BASE_DIR / "static"
-#STATICFILES_DIRS = [
+# STATIC_URL = '/static/'
+# STATIC_ROOT = BASE_DIR / "static"
+# STATICFILES_DIRS = [
 #                    BASE_DIR / "staticfiles",
 #                                ]
 
-MEDIA_URL =''
+STATIC_URL = '/static/'
+
+# The absolute path to the directory where collectstatic will collect static files for deployment.
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'web', 'static'),
+)
+
+
+MEDIA_URL = ''
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR / 'core' ))
 
 # Default primary key field type
@@ -149,5 +160,5 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR / 'core' ))
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

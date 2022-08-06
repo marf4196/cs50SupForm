@@ -6,7 +6,7 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>بلیط حضوری تون رو گم کردید؟</title>
+  <title>بلیت حضوری تون رو گم کردید؟</title>
   <link rel="stylesheet" href="/static/style/style.css" type="text/css">
   <link rel="stylesheet" href="/static/vendor/bootstrap.min.css" type="text/css">
 </head>
@@ -14,13 +14,13 @@
 
 <div id="app" class="row m-0">
   <Cs50>
-    <h1 class="cs-title">بلیط حضوری تون رو گم کردید؟</h1>
+    <h1 class="cs-title">بلیت حضوری تون رو گم کردید؟</h1>
 
     <form class="rp-content text-center" method="post" action="/find-ticket">
         {% csrf_token %}
-      <input type="text" class="t1" maxlength="15" name="ticket" placeholder="کد بلیط">
+      <input type="tel" class="t1" maxlength="35" name="phone" placeholder="شماره تلفن">
 
-      <button class="t5">ثبت کد بلیط</button>
+      <button class="t5">پیدا کردن بلیت</button>
     </form>
   </Cs50>
 

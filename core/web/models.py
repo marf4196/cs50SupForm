@@ -14,12 +14,11 @@ class Students(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
     email = models.EmailField(unique=False, null=False, blank=False)
     phone = models.BigIntegerField(unique=False, null=False, blank=False)
-    ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} - {self.phone} - {self.email} - {self.ticket}"
+        return f"{self.name} - {self.phone} - {self.email}"
     
     class Meta:
         verbose_name = "دانشجو دوره"
@@ -44,10 +43,9 @@ class Feedback(models.Model):
 
 class ClassAttend(models.Model):
     name = models.CharField(max_length=255, blank=False, null=False)
-    slug = models.SlugField(max_length=255, blank=False, null=False)
+    slug = models.SlugField(allow_unicode=True, max_length=255, blank=False, null=False)
     email = models.EmailField(null=False, blank=False)
     phone = models.BigIntegerField(null=False, blank=False)
-    ticket = models.CharField(max_length=10, blank=False, null=False)
     qr_code = models.ImageField(upload_to='media/qr_codes', blank=True)
     canceled = models.BooleanField(default=False)
     entered = models.BooleanField(default=False)
@@ -62,11 +60,11 @@ class ClassAttend(models.Model):
         if not self.slug:
             self.slug = slugify(f"{self.name}_week4")
         # qr code config
-        qrcode_image = qrcode.make("https:"+"/"+f"/cs50xiran.com/validate-code/{self.ticket}-week4/")
+        qrcode_image = qrcode.make("https:"+"/"+f"/cs50xiran.com/validate-code/{self.phone}-week5/")
         canvas = Image.new('RGB', (420,420), 'white')
         draw = ImageDraw.Draw(canvas)
         canvas.paste(qrcode_image)
-        file_name = f'{self.ticket}.png'
+        file_name = f'{self.phone}.png'
         buffer = BytesIO()
         canvas.save(buffer, 'PNG')
         self.qr_code.save(file_name, File(buffer), save=False)
@@ -78,10 +76,9 @@ class ClassAttend(models.Model):
         verbose_name_plural = "لیست شرکت کنندگان کلاس حضوری"
 
 class ClassCancel(models.Model):
-    name = models.CharField(unique=True, max_length=255, blank=False, null=False)
-    email = models.EmailField(unique=True, null=False, blank=False)
-    phone = models.BigIntegerField(unique=True, null=False, blank=False)
-    ticket = models.CharField(unique=True, max_length=10, blank=False, null=False)
+    name = models.CharField(max_length=255, blank=False, null=False)
+    email = models.EmailField(null=False, blank=False)
+    phone = models.BigIntegerField(null=False, blank=False)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
@@ -108,7 +105,6 @@ class NoSupport(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
     email = models.EmailField(null=False, blank=False)
     phone = models.BigIntegerField(null=False, blank=False)
-    ticket = models.CharField(max_length=10, blank=False, null=False)
     description = models.CharField(max_length=2048, blank=False, null=False)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
@@ -125,7 +121,7 @@ class SupporterSurvey(models.Model):
     supporter = models.ForeignKey("TA", on_delete=models.DO_NOTHING, null=False, blank=False)
     satisfaction = models.BooleanField(null=False, blank=False) 
     description = models.TextField(null=True, blank=True)
-    image_url = models.ImageField(upload_to="TA_evidence/", blank=True, null=True)
+    image_url = models.ImageField(upload_to="media/TA_evidence/", blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
