@@ -15,31 +15,38 @@
 <div id="app" class="row m-0">
     <Cs50>
         <h1 class="cs-title">فرم ثبت نظر پشتیبان های علمی</h1>
-        <p class="cs-content" dir="rtl">
-            {% csrf_token %}
-            من
-            <input type="text" name="name" class="t1 cs1" maxlength="255" placeholder="نام و نام خانوادگی">
-            با ایمیل
-            <input type="email" name="email" class="t1 cs1" maxlength="35" placeholder="ایمیل">
-            و با شماره تلفن
-            <input type="tel" name="phone" class="t1 cs1" maxlength="35" placeholder="شماره تلفن">
-            از
-            <select class="form-select t2" name="discord_id" aria-label="پشتیبان">
-                <option selected>...</option>
-            </select>
-            راضی
-            <select class="form-select t2" name="satisfaction" aria-label="پشتیبان">
-                <option value="1" selected>هستم</option>
-                <option value="2">نیستم</option>
-            </select>
-        </p>
+        <form action="" id="rate_form">
+            <p class="cs-content" dir="rtl">
+                {% csrf_token %}
+                من
+                <input type="text" name="name" class="t1 cs1" maxlength="255" placeholder="نام و نام خانوادگی" required>
+                با ایمیل
+                <input type="email" name="email" class="t1 cs1" maxlength="35" placeholder="ایمیل" required>
+                و با شماره تلفن
+                <input type="tel" name="phone" class="t1 cs1" maxlength="35" minlength="10" placeholder="شماره تلفن" required>
+                از
+                <select class="form-select t2" name="discord_id" aria-label="پشتیبان" required>
+                    <option selected>...</option>
+                </select>
+                راضی
+                <select class="form-select t2" name="satisfaction" aria-label="پشتیبان" required>
+                    <option value="1" selected>هستم</option>
+                    <option value="2">نیستم</option>
+                </select>
+            </p>
 
-        <textarea placeholder="به دلیل" name="description" class="t3"></textarea>
+            <textarea placeholder="به دلیل" name="description" class="t3" required></textarea>
 
-        <input class="form-control t4" name="image" type="file" id="formFileMultiple">
+            <input class="form-control t4" name="image" type="file" accept="image/*" id="formFileMultiple">
 
-        <button class="t5">ثبت</button>
+            <button class="t5" type="button">ثبت</button>
+        </form>
     </Cs50>
+
+    <Error class="d-none">
+        <span class="err_data"></span>
+    </Error>
+</div>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -49,35 +56,78 @@
         xhttp.onload = function() {
             const rsp = JSON.parse(this.responseText)
 
-            for (let i = 0; i < rsp.length; i++) text += `<option value="${rsp[i]}" ${i === 0 ? "selected" : ""}>${rsp[i]}</option>`
+            text += "<option selected disabled hidden>انتخاب کنید</option>"
+            for (let i = 0; i < rsp.length; i++) text += `<option value="${rsp[i]}">${rsp[i]}</option>`
             document.querySelector("#app .cs-content select[name='discord_id']").innerHTML = text
        }
 
-        xhttp.open("GET", "/static/ta.json")
+        xhttp.open("GET", window.location.origin + "/static/ta.json")
         xhttp.send()
 
         const base = document.querySelector("#app .cs-content")
 
         document.querySelector("#app .t5").onclick = () =>
         {
-            const formData = new FormData()
+            if (document.getElementById("rate_form").checkValidity())
+            {
+                if (base.querySelector("select[name='discord_id']").value === 'انتخاب کنید')
+                {
+                     document.getElementById("error").querySelector(".err_data").innerHTML = "لطفا TA مورد نظر را انتخاب کنید!"
+                     document.getElementById("error").classList.remove("d-none")
+                }
+                else
+                {
+                    const formData = new FormData()
 
-            formData.set("name", base.querySelector("input[name='name']").value)
-            formData.set("email", base.querySelector("input[name='email']").value)
-            formData.set("phone", base.querySelector("input[name='phone']").value)
-            formData.set("discord_id", base.querySelector("select[name='discord_id']").value)
-            formData.set("satisfaction", base.querySelector("select[name='satisfaction']").value)
-            formData.set("description", document.querySelector("#app textarea").value)
-            formData.set("csrfmiddlewaretoken", document.querySelector("#app input[name='csrfmiddlewaretoken']").value)
+                    let isFileOk
 
-            xhttp.onload = function() {
-                alert("done")
-                alert(this.responseText)
-            }
+                    if (document.querySelector("#app input[name='image']").files.length !== 0)
+                    {
+                        if ((document.querySelector("#app input[name='image']").files[0].size / 1024 / 1024) > 3)
+                        {
+                            document.getElementById("error").querySelector(".err_data").innerHTML = "حجم فایل ارسالی نباید بیشتر از 300 مگ باشد!"
+                            document.getElementById("error").classList.remove("d-none")
 
-            xhttp.open("POST", "/api/v1/submit_TA_survey/")
-            xhttp.send(formData)
+                            isFileOk = false
+                        }
+                        else
+                        {
+                            formData.set("image_url", document.querySelector("#app input[name='image']").files[0])
+                            isFileOk = true
+                        }
 
+                    } else isFileOk = true
+
+                    if (isFileOk)
+                    {
+                        formData.set("name", base.querySelector("input[name='name']").value)
+                        formData.set("email", base.querySelector("input[name='email']").value)
+                        formData.set("phone", base.querySelector("input[name='phone']").value)
+                        formData.set("discord_id", base.querySelector("select[name='discord_id']").value)
+                        formData.set("satisfaction", base.querySelector("select[name='satisfaction']").value)
+                        formData.set("description", document.querySelector("#app textarea").value)
+                        formData.set("csrfmiddlewaretoken", document.querySelector("#app input[name='csrfmiddlewaretoken']").value)
+
+                        xhttp.onload = function() {
+                            const rsp = JSON.parse(this.responseText)
+
+                            if(rsp["success"])
+                            {
+                                document.getElementById("error").querySelector(".err_data").innerHTML = "نظر شما با موقیت ثبت شد!"
+                                document.getElementById("error").classList.remove("d-none")
+                            }
+                            else
+                            {
+                                document.getElementById("error").querySelector(".err_data").innerHTML = this.responseText
+                                document.getElementById("error").classList.remove("d-none")
+                            }
+                        }
+
+                        xhttp.open("POST", window.location.origin + "/api/v1/submit_TA_survey/")
+                        xhttp.send(formData)
+                    }
+                }
+            } else document.getElementById("rate_form").reportValidity()
         }
     })
 </script>
