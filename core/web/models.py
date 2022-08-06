@@ -64,7 +64,7 @@ class ClassAttend(models.Model):
         if not self.slug:
             self.slug = slugify(f"{self.name}_week4")
         # qr code config
-        qrcode_image = qrcode.make("https:"+"/"+f"/cs50xiran.com/validate-code/{self.ticket}-week4/")
+        qrcode_image = qrcode.make("https:"+"/"+f"/cs50xiran.com/validate-code/{self.ticket}-week5/")
         canvas = Image.new('RGB', (420,420), 'white')
         draw = ImageDraw.Draw(canvas)
         canvas.paste(qrcode_image)

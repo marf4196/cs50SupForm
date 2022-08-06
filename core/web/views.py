@@ -47,7 +47,7 @@ class ClassAttendView(View):
                 
                 # if capacity is completed user can not register
                 qs = ClassInfo.objects.get(name='capacity_counter')
-                if qs.counter < 0:
+                if qs.counter <= 0:
                     context = {'detail': 'متاسفانه ظرفیت ثبت نام حضوری به پایان رسیده', 'capacity': capacity}
                     return render(request, 'register.html', context)
 
@@ -115,9 +115,9 @@ class ClassCancelView(View):
             form.save()
 
             # increase capacity
-            qs = ClassInfo.objects.get(name='capacity_counter')
-            qs.counter += 1
-            qs.save()
+            #qs = ClassInfo.objects.get(name='capacity_counter')
+            #qs.counter += 1
+            #qs.save()
 
             # TODO: Send SMS
 
