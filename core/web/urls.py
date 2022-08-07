@@ -3,6 +3,8 @@ from web.views import (
     WelcomePage, FeedbackView, FindTicketView, 
     ClassAttendView, NoSupportView, rate_template ,
     ClassCancelView, StaffLogin, StaffLogout, ValidateQRcode)
+#from django.conf import settings
+#from django.conf.urls.static import static
 
 app_name = 'web'
 
@@ -18,3 +20,5 @@ urlpatterns = [
     path('validate-code/<str:key>/', ValidateQRcode.as_view(), name='validate-code'),  # slug = classAttend.slug
     path('rate', rate_template.as_view(), name='rate-template'),
 ]
+#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + \
+#                       static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

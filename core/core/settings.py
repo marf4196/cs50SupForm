@@ -23,14 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-squ!%j3=*$6e!3j!98$9wj!s8cu#d8)kr=l8d4x$j-jpjz1h4u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True 
+DEBUG = False 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['www.cs50xiran.com', 'cs50xiran.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -144,11 +145,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'web', 'static'),
+    os.path.join(BASE_DIR, "web", "static"),
 )
 
 
