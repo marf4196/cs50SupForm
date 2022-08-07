@@ -25,13 +25,12 @@ SECRET_KEY = 'django-insecure-squ!%j3=*$6e!3j!98$9wj!s8cu#d8)kr=l8d4x$j-jpjz1h4u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False 
 
-ALLOWED_HOSTS = ['www.cs50xiran.com', 'cs50xiran.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +43,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -154,12 +152,12 @@ STATICFILES_DIRS = (
 
 
 MEDIA_URL = ''
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR / 'core' ))
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR , 'media' ))
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

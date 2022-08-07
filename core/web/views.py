@@ -13,7 +13,7 @@ class rate_template(TemplateView):
     template_name = 'rate.html'
 
 class WelcomePage(TemplateView):
-    template_name = 'index.html'
+    template_name = 'index2.html'
 
 class ClassAttendView(View):
     def get(self, request, *args, **kwrags):
